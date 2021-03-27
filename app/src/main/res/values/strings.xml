@@ -10,5 +10,12 @@
     <string name="get_started">Get Started!</string>
     <string name="entry_on">Entry On</string>
     <string name="project_name">Project Name</string>
-    <string name="mock_week_range">01/01 - 01/05</string>
+    <string name="mock_week_range">01/01 – 01/05</string>
+    <string name="others">Others</string>
+    <string name="badges">Badges</string>
+    <string name="txtAchievements">Achievements</string>
+    <string name="txtLevel">Level 1 - Engager</string>
+    <string name="txtName">Emanuel Gheorghe</string>
+    <string name="todo">TODO</string>
+
 </resources>

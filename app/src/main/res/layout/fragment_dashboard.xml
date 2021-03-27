@@ -47,7 +47,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/rank1"
-                        tools:src="@tools:sample/avatars" />
+                        tools:src="@tools:sample/avatars"
+                        android:contentDescription="@string/todo" />
 
                     <TextView
                         android:id="@+id/txtEmployeeName"
@@ -56,7 +57,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Emanuel Gheorghe"
+                        android:text="@string/txtName"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="24sp"
@@ -74,7 +75,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Level 1 - Engager"
+                        android:text="@string/txtLevel"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="24sp"
@@ -116,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:elevation="24dp"
+                app:cardBackgroundColor="?attr/surface"
                 app:cardCornerRadius="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -129,7 +131,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Achievements"
+                        android:text="@string/txtAchievements"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="?android:attr/textColorPrimary"
@@ -164,7 +166,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement2"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtAchievements" />
+                                app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
+                                android:contentDescription="@string/todo" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement7"
@@ -178,7 +181,8 @@
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement3"
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement1"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
-                                app:srcCompat="@drawable/achievement2" />
+                                app:srcCompat="@drawable/achievement2"
+                                android:contentDescription="@string/todo" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement8"
@@ -193,7 +197,8 @@
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement2"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="0.0"
-                                app:srcCompat="@drawable/achievement3" />
+                                app:srcCompat="@drawable/achievement3"
+                                android:contentDescription="@string/todo" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement9"
@@ -208,7 +213,8 @@
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement3"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:srcCompat="@drawable/achievement4" />
+                                app:srcCompat="@drawable/achievement4"
+                                android:contentDescription="@string/todo" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement10"
@@ -223,7 +229,8 @@
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement4"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:srcCompat="@drawable/achievement5" />
+                                app:srcCompat="@drawable/achievement5"
+                                android:contentDescription="@string/todo" />
 
                         </LinearLayout>
                     </HorizontalScrollView>
@@ -236,6 +243,7 @@
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
                 android:elevation="24dp"
+                app:cardBackgroundColor="?attr/surface"
                 app:cardCornerRadius="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -247,12 +255,14 @@
                         android:id="@+id/txtBadges"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="Badges"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/badges"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="24sp"
+                        android:textSize="36sp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.124" />
@@ -264,6 +274,7 @@
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
                 android:elevation="24dp"
+                app:cardBackgroundColor="?attr/surface"
                 app:cardCornerRadius="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -274,12 +285,14 @@
                         android:id="@+id/txtBadges1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="Other recognitions"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/others"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="24sp"
+                        android:textSize="36sp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.124" />
