@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ExperimentV2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_authentication">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="saggezza_brand_image">Saggezza Logo</string>
+    <string name="get_started">Get Started!</string>
+    <string name="entry_on">Entry On</string>
+    <string name="project_name">Project Name</string>
+    <string name="mock_week_range">01/01 - 01/05</string>
+</resources>

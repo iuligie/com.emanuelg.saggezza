@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "386782255131",
+    "firebase_url": "https://emanuel-dissertation.firebaseio.com",
+    "project_id": "emanuel-dissertation",
+    "storage_bucket": "emanuel-dissertation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386782255131:android:e78e34bd77eee6b8d3c0be",
+        "android_client_info": {
+          "package_name": "com.emanuelg.mysaggezzatimesheet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386782255131-vs9mtereb1ma0o4nk9jogemfl7br1jm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emanuelg.mysaggezzatimesheet",
+            "certificate_hash": "aa99161766baa332744b681f9b10ee6fa001de6e"
+          }
+        },
+        {
+          "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGVFEvQ0Z-K4wYKl5tGKkcWC3Vpr_1M6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386782255131:android:ae3b916e7d82fa55d3c0be",
+        "android_client_info": {
+          "package_name": "com.emanuelg.mysaggezzatimesheets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386782255131-97geumbjihbm41gud7d9qkf58rtjf5gm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emanuelg.mysaggezzatimesheets",
+            "certificate_hash": "aa99161766baa332744b681f9b10ee6fa001de6e"
+          }
+        },
+        {
+          "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGVFEvQ0Z-K4wYKl5tGKkcWC3Vpr_1M6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386782255131:android:4ebc38a1715c575bd3c0be",
+        "android_client_info": {
+          "package_name": "com.emanuelg.saggezza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386782255131-m84mtjh62htbtisa4ida4331rldba4at.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emanuelg.saggezza",
+            "certificate_hash": "aa99161766baa332744b681f9b10ee6fa001de6e"
+          }
+        },
+        {
+          "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGVFEvQ0Z-K4wYKl5tGKkcWC3Vpr_1M6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386782255131-6ee2hnbi276dq5q76gf9jqubl0i7sa6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

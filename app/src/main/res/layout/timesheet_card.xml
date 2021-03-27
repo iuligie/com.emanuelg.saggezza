@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardEntry"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:layout_margin="8dp"
+    android:elevation="1dp"
+    app:cardBackgroundColor="?attr/surface"
+    app:cardCornerRadius="14dp"
+    app:contentPadding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layout_badge_entry"
+            android:layout_width="125dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="2dp">
+
+            <ImageView
+                android:id="@+id/imgBadge"
+                android:layout_width="38dp"
+                android:layout_height="30dp"
+                android:layout_above="@+id/txtEntryDate"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:contentDescription="badge placeholder"
+                android:padding="0dp"
+                app:srcCompat="@drawable/badge"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txtEntryOn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_toEndOf="@+id/imgBadge"
+                android:gravity="start"
+                android:letterSpacing="0.05"
+                android:maxLines="1"
+                android:text="@string/entry_on"
+                android:textAlignment="textStart"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtEntryDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEntryOn"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:letterSpacing="0.1"
+                android:text="01/05/2020"
+                android:textAlignment="center"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_hours_bubble"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/layout_badge_entry"
+            android:layout_toEndOf="@+id/layout_details">
+
+            <ImageView
+                android:id="@+id/imgHours"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:contentDescription="badge_placeholder"
+                android:labelFor="@id/txtHours"
+                android:padding="0dp"
+                app:srcCompat="@drawable/img_hoursbubble"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txtHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="38dp"
+                android:gravity="center"
+                android:text="40"
+                android:textAlignment="center"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:autoSizeTextType="uniform"
+                tools:ignore="HardcodedText" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_details"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="0dp">
+
+            <TextView
+                android:id="@+id/txtTaskName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/txtProject"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="5dp"
+                android:maxWidth="180dp"
+                android:maxLines="1"
+                android:text="Task Name"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txtProject"
+                android:layout_width="match_parent"
+                android:layout_height="26dp"
+                android:layout_above="@+id/txtDate"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="5dp"
+                android:maxLines="1"
+                android:text="@string/project_name"
+                android:textAlignment="textStart"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="198dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/mock_week_range"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
