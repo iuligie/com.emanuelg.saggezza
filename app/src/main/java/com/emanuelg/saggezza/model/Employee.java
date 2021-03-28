@@ -31,16 +31,14 @@ public class Employee {
 
             instance = new Employee();
         return instance;
-
     }
-
     @NotNull
     @Exclude
     public FirebaseUser getAccount() {
        // assert FirebaseAuth.getInstance().getCurrentUser() != null;
         return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
     }
-    private void setAccount(FirebaseUser account) {
+    public void setAccount(FirebaseUser account) {
         this.account = account;
     }
     //endregion
@@ -69,6 +67,7 @@ public class Employee {
     //region My Reference
     @Exclude
     public DocumentReference getMyReference() {
+        assert myReference != null;
         return myReference;
     }
     public void setMyReference(DocumentReference myReference) {

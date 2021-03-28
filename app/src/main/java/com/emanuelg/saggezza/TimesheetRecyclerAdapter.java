@@ -50,7 +50,8 @@ public class TimesheetRecyclerAdapter extends RecyclerView.Adapter<TimesheetRecy
        // item.setProject(TimesheetApi.getInstance().getProjectByRef(item.getProjectRef()));
         holder.txtTaskName.setText(item.getTask().getName());
         holder.txtProjectName.setText(item.getProject().getName());
-        holder.txtDate.setText(MessageFormat.format("{0} - {1}",item.getBeginDate().substring(0,5), item.getEndDate().substring(0,5)));
+        //holder.txtDate.setText(MessageFormat.format("{0} - {1}",item.getBeginDate().substring(0,5), item.getEndDate().substring(0,5)));
+        holder.txtDate.setText(item.getBeginDate());
         holder.txtHours.setText(item.getHours());
 
         //imageUrl = item.getImageUrl();

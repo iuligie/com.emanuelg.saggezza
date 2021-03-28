@@ -37,7 +37,7 @@ public class TimesheetApi extends Application {
         timesheetList = new ArrayList<>();
         myProjectsList = new ArrayList<>();
         myTasksList = new ArrayList<>();
-        //if (Employee.getInstance().getAccount().getUid() == null) throw new AssertionError();
+        Employee.getInstance().getAccount().getUid();
         loadMyTasks();
         loadMyProjects();
         loadMyTimesheets();
@@ -66,7 +66,8 @@ public class TimesheetApi extends Application {
     //region Load data from Cloud Firestore
     public void loadMyTimesheets() {
         CollectionReference collectionReference = db.collection("Timesheets");
-        collectionReference.whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
+        collectionReference.orderBy("submittedOn", Query.Direction.DESCENDING)
+                .whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
@@ -118,8 +119,10 @@ public class TimesheetApi extends Application {
                             Task item = items.toObject(Task.class);
                             item.setId(items.getId());
                             if(item.getResources().contains(Employee.getInstance().getMyReference()))
+                            {
                                 item.setDocReference(items.getReference());
-                            myTasksList.add(item);
+                                myTasksList.add(item);
+                            }
                         }
 
                         //setMyTasksList(myTasksList);

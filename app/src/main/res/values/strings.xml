@@ -17,5 +17,15 @@
     <string name="txtLevel">Level 1 - Engager</string>
     <string name="txtName">Emanuel Gheorghe</string>
     <string name="todo">TODO</string>
-
+    <string name="my_timesheets">My Timesheets</string>
+    <string name="label_projectDropdown">Select Project</string>
+    <string name="label_taskDropdown">Select Task</string>
+    <string name="mock_date">01/01/2021</string>
+    <string name="hours">40</string>
+    <string name="txtSubmitButton">Submit</string>
+    <string name="dash_dateRange">-</string>
+    <string name="hint_dateRange">Select Date Range</string>
+    <string name="hint_Hours">Enter Hours</string>
+   <!-- <string name="default_web_client_id">386782255131-k78oci6tpmcfdn2h0ms6e33q4a0e16mf.apps.googleusercontent.com</string>
+-->
 </resources>

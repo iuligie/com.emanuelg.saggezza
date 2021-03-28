@@ -41,10 +41,10 @@ public class Authentication extends AppCompatActivity {
     private static final String TAG = "AUTHENTICATION";
     private FirebaseAuth mAuth;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    TimesheetApi api;
+    //TimesheetApi api;
     GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
-    private List<Employee> employeeList = new ArrayList<>();
+    //private List<Employee> employeeList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,61 +118,57 @@ public class Authentication extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
+            throw new RuntimeException();
+            //updateUI(null);
         }
     }
     private void updateUI(FirebaseUser account) {
         if(account != null)
         {
             updateDatabase(account);
-             api = TimesheetApi.getInstance();
+             TimesheetApi api = TimesheetApi.getInstance();
             startActivity(new Intent(this, MainActivity.class));
         }
     }
 
     private void updateDatabase(FirebaseUser user) {
         final boolean[] newUser = {false};
-        Employee employee = Employee.getInstance();
         db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            assert document != null;
-                            if (!document.exists()) {
-                                addEmployee(user);
-                            } else {
-                                loadExistingUser();
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        assert document != null;
+                        if (!document.exists()) {
+                            addEmployee(user);
                         } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
-                            Rollbar.instance().error("Can not load employees");
+                            Employee temp = Employee.getInstance();
+                            temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
+                            temp.setSupervisor(Objects.requireNonNull(document.toObject(Employee.class)).isSupervisor());
+                            temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
+                            temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
+                            temp.setMyReference(Objects.requireNonNull(document.getReference()));
+                            temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
+                            //assert temp != null;
+                            //temp.setAccount(user);
+                            //temp.setMyReference(document.getReference());
+                            //loadExistingUser(temp);
                         }
+                    } else {
+                        Log.d(TAG, "Failed with: ", task.getException());
+                        Rollbar.instance().error("Can not load employees");
                     }
                 });
-
-
-
-
-
-
-
     }
 
-    private void loadExistingUser() {
-        db.collection("Employees").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot items : Objects.requireNonNull(task.getResult())) {
-                        Employee temp = items.toObject(Employee.class);
-                        employeeList.add(temp);
-                    }
-                    TimesheetApi.getInstance().setEmployeeList(employeeList);
-                }
-            }});
+    private void loadExistingUser(Employee temp) {
+        Employee employee = Employee.getInstance();
+        employee.setEmail(temp.getEmail());
+        employee.setSupervisor(true);
+        employee.setSupervisorId(temp.getSupervisorId());
+        employee.setScore(temp.getScore());
+        employee.setMyReference(temp.getMyReference());
+        employee.setAccount(temp.getAccount());
     }
 
     private void addEmployee(FirebaseUser user) {
@@ -193,29 +189,28 @@ public class Authentication extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null)
         updateUI(currentUser);
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                           // Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // ...
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                       // Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                        throw new RuntimeException();
+                        //updateUI(null);
                     }
+
+                    // ...
                 });
     }
 }

@@ -82,7 +82,7 @@ public class Project {
         return isBillable;
     }
 
-    public void setBillable(boolean isBillable) {
+    public void setIsBillable(boolean isBillable) {
         this.isBillable = isBillable;
     }
 
