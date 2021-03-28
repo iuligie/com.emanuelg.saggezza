@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    tools:context=".AddTimesheetActivity">
+
+    <TextView
+        android:id="@+id/txtSelection"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_gravity="bottom|center_horizontal|center_vertical"
+        android:layout_marginBottom="100dp"
+        android:autoSizeTextType="uniform"
+        android:text="@string/get_started"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnPrimary"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dropdownProject"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/label_projectDropdown">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteProject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="?android:textColorPrimary"
+            android:hint="@string/label_projectDropdown"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dropdownTask"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/label_taskDropdown">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="?android:textColorPrimary"
+            android:hint="@string/label_taskDropdown"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardProject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="?attr/surface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="24dp"
+        tools:visibility="gone">
+
+        <Spinner
+            android:id="@+id/spnProjects"
+            style="@android:style/Widget.Material.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:autofillHints="Select Project"
+            android:background="?attr/surface"
+            android:gravity="center"
+            android:popupBackground="?attr/surface"
+            android:spinnerMode="dropdown"
+            tools:autofillHints="Select Project" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="?attr/surface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="24dp"
+        tools:visibility="gone">
+
+        <Spinner
+            android:id="@+id/spnTasks"
+            style="@android:style/Widget.Material.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:autofillHints="Select Task"
+            android:background="?attr/surface"
+            android:gravity="center"
+            android:popupBackground="?attr/surface"
+            android:spinnerMode="dropdown"
+            tools:autofillHints="Select Task" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardDates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="?attr/surface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="24dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:cardBackgroundColor="?attr/surface"
+            app:cardCornerRadius="24dp">
+
+            <EditText
+                android:id="@+id/EndDatePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="8"
+                android:focusable="false"
+                android:hint="@string/mock_date"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:longClickable="false"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:text="01/01/2021" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="?attr/surface"
+            app:cardCornerRadius="24dp">
+
+            <EditText
+                android:id="@+id/BeginDatePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="8"
+                android:focusable="false"
+                android:hint="@string/mock_date"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:longClickable="false"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:text="01/01/2021" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txtRangeDash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_mono"
+            android:scaleX="2.5"
+            android:text="@string/dash_dateRange"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardHours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="250dp"
+        app:cardBackgroundColor="?attr/surface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="24dp">
+
+        <EditText
+            android:id="@+id/inputHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="40"
+            android:ems="10"
+            android:hint="@string/hours"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="40" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnSubmitTimesheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:background="@color/SaggezzaGreen"
+        android:fontFamily="@font/roboto_mono"
+        android:text="@string/txtSubmitButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="?android:attr/textColorPrimary"
+        app:cornerRadius="24dp"
+        app:rippleColor="@color/SaggezzaGreen"
+        tools:text="Submit" />
+
+
+</FrameLayout>
