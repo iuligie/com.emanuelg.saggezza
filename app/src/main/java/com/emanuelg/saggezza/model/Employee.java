@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Employee {
 
     //region Variables
-    public boolean isSupervisor;
+    public boolean supervisor;
     @Exclude
     private FirebaseUser account;
 
@@ -21,6 +21,8 @@ public class Employee {
     private DocumentReference myReference;
     private static Employee instance;
     private int score;
+    private String name;
+    private int achievementsTotal;
     //endregion
     public Employee() {
     }
@@ -50,10 +52,10 @@ public class Employee {
         this.supervisorId = supervisorId;
     }
     public boolean isSupervisor() {
-        return isSupervisor;
+        return supervisor;
     }
-    public void setSupervisor(boolean isSupervisor) {
-        this.isSupervisor = isSupervisor;
+    public void setSupervisor(boolean supervisor) {
+        this.supervisor = supervisor;
     }
     //endregion
     //region Email
@@ -65,16 +67,25 @@ public class Employee {
     }
     //endregion
     //region My Reference
-    @Exclude
+    //@Exclude
     public DocumentReference getMyReference() {
-        assert myReference != null;
+       // assert myReference != null;
         return myReference;
     }
     public void setMyReference(DocumentReference myReference) {
         this.myReference = myReference;
     }
     //endregion
+    //region Name
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    //endregion
     //region Score
 
     public int getScore() {
@@ -83,6 +94,25 @@ public class Employee {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void incrementScore() {
+        score+=10;
+    }
+
+    //endregion
+    //region Achievements
+
+    public int getAchievementsTotal() {
+        return achievementsTotal;
+    }
+
+    public void setAchievementsTotal(int achievementsTotal) {
+        this.achievementsTotal = achievementsTotal;
+    }
+    public void incrementAchievementsTotal()
+    {
+        achievementsTotal++;
     }
 
     //endregion

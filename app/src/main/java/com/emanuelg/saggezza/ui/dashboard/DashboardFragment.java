@@ -1,10 +1,14 @@
 package com.emanuelg.saggezza.ui.dashboard;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +22,15 @@ import com.emanuelg.saggezza.R;
 import com.emanuelg.saggezza.TimesheetApi;
 import com.emanuelg.saggezza.model.Employee;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.OrderBy;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,17 +43,16 @@ public class DashboardFragment extends Fragment {
     private List<Employee> employeeList =new ArrayList<>();
     private RecyclerView recyclerView;
     private LeaderboardRecyclerAdapter leaderboardRecyclerAdapter;
+    ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.txtAchievements);
-//        noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
 
+        progressBar = root.findViewById(R.id.progressBar_Leaderboard);
 
-        //progressBar.setVisibility(View.VISIBLE);
-//        TimesheetApi.getInstance().MyTimesheetListener();
+        progressBar.setVisibility(View.VISIBLE);
 
         return root;
     }
@@ -56,9 +62,12 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.leaderboard);
         TextView txtEmployeeName= view.findViewById(R.id.txtEmployeeName);
+        TextView txtLevel = view.findViewById(R.id.txtLevel);
         ImageView imgRank = view.findViewById(R.id.imgRank);
+        Pair<String, Integer> rankAndAvatar = TimesheetApi.getInstance().getRankAndAvatar(Employee.getInstance().getScore());
+        txtLevel.setText(rankAndAvatar.first);
         Picasso.get()
-                .load(R.drawable.rank1)
+                .load(rankAndAvatar.second)
                 .placeholder(R.drawable.rank1)
                 .resize(300, 300)
                 .into(imgRank);
@@ -67,30 +76,84 @@ public class DashboardFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         InitializeData();
 
+        ImageView imgAchievement1 = view.findViewById(R.id.imgAchiement1);
+        ImageView imgAchievement2 = view.findViewById(R.id.imgAchiement2);
+        ImageView imgAchievement3 = view.findViewById(R.id.imgAchiement3);
+        ImageView imgAchievement4 = view.findViewById(R.id.imgAchiement4);
+        ImageView imgAchievement5 = view.findViewById(R.id.imgAchiement5);
+
+        int achievementsTotal = Employee.getInstance().getAchievementsTotal();
+        List<ImageView> imgs = new ArrayList<>();
+        if(achievementsTotal == 2)
+        {
+            imgs.add(imgAchievement1);
+            imgs.add(imgAchievement2);
+            imgAchievement3.setVisibility(View.GONE);
+            imgAchievement4.setVisibility(View.GONE);
+            imgAchievement5.setVisibility(View.GONE);
+
+        }else if(achievementsTotal==3)
+        {
+            imgs.add(imgAchievement1);
+            imgs.add(imgAchievement2);
+            imgs.add(imgAchievement3);
+            imgAchievement4.setVisibility(View.GONE);
+            imgAchievement5.setVisibility(View.GONE);
+        }else if(achievementsTotal == 4)
+        {
+            imgs.add(imgAchievement1);
+            imgs.add(imgAchievement2);
+            imgs.add(imgAchievement3);
+            imgs.add(imgAchievement4);
+            imgAchievement5.setVisibility(View.GONE);
+        }else if(achievementsTotal == 5){
+            imgs.add(imgAchievement1);
+            imgs.add(imgAchievement2);
+            imgs.add(imgAchievement3);
+            imgs.add(imgAchievement4);
+            imgs.add(imgAchievement5);
+        }else{
+            imgs.add(imgAchievement1);
+            imgAchievement2.setVisibility(View.GONE);
+            imgAchievement3.setVisibility(View.GONE);
+            imgAchievement4.setVisibility(View.GONE);
+            imgAchievement5.setVisibility(View.GONE);
+        }
+        LoadAchievements(imgs);
+    }
+
+    private void LoadAchievements(List<ImageView> imgs) {
+
+        List<Uri> res=getAchievements(imgs.size()+1);//= TimesheetApi.getInstance().getAchievements(imgs.size()+1);
+        for (int i=0;i<imgs.size();i++) {
+            Picasso.get()
+                    .load(res.get(i).toString())
+                    .placeholder(R.drawable.achievement5)
+                    .resize(300, 300)
+                    .into(imgs.get(i));
+        }
+
     }
 
     private void InitializeData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map <String,Integer> itemLeaderboard = new HashMap<String,Integer>();
         db.collection("Employees")
                 .orderBy("score", Query.Direction.DESCENDING)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot items : Objects.requireNonNull(task.getResult())) {
-                        Employee temp = items.toObject(Employee.class);
-                        itemLeaderboard.put(temp.getEmail(),temp.getScore());
-                        employeeList.add(temp);
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot items : Objects.requireNonNull(task.getResult())) {
+                            Employee temp = items.toObject(Employee.class);
+                            employeeList.add(temp);
+                        }
+                        TimesheetApi.getInstance().setEmployeeList(employeeList);
+                        InitializeAdapter();
                     }
-                    TimesheetApi.getInstance().setEmployeeList(employeeList);
-                    InitializeAdapter();
-                }
-            }});
+                });
         //for (int i=0;i<=5;i++)
         //employeeList.add(Employee.getInstance());
         //if (employeeList.size()!=0)
         InitializeAdapter();
+        progressBar.setVisibility(View.INVISIBLE);
         /*else{
             employeeList.add(Employee.getInstance());
             InitializeAdapter();
@@ -103,4 +166,33 @@ public class DashboardFragment extends Fragment {
         recyclerView.setAdapter(leaderboardRecyclerAdapter);
         leaderboardRecyclerAdapter.notifyDataSetChanged();
     }
+
+    public List<Uri> getAchievements(int total) {
+        List<Uri> result = new ArrayList<>();
+        // Create a Cloud Storage reference from the app
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        //StorageReference storageRef = storage.getReference();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
+        for (int i = 1; i <= total; i++) {
+            String strImg = "achievement" + i + ".png";
+            storageRef.child("achievement1.png")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(result::add);
+
+        }
+        if (com.emanuelg.saggezza.BuildConfig.DEBUG && result.size() == 0) {
+            result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement1.png?alt=media&token=ad9b5aba-00de-4177-9bba-8c0b459b9973"));
+            if (total >= 2)
+                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement2.png?alt=media&token=ce2a5a65-f459-4bdf-ba9e-4f36daac42d2"));
+            if (total >= 3)
+                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement3.png?alt=media&token=6d9112a7-5e46-452b-a8ea-c223793dc057"));
+            if (total >= 4)
+                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement4.png?alt=media&token=549d484a-5d14-4b05-8473-1420356812ca"));
+            if (total >= 5)
+                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement5.png?alt=media&token=1f56fd4b-32cb-46a6-be4e-842614f59240"));
+            //throw new AssertionError("Unable to load achievements");
+        }
+        return result;
+    }
+
 }

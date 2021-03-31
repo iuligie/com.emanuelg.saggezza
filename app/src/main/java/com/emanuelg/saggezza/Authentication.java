@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,16 +43,18 @@ public class Authentication extends AppCompatActivity {
     private static final String TAG = "AUTHENTICATION";
     private FirebaseAuth mAuth;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //TimesheetApi api;
     GoogleSignInClient mGoogleSignInClient;
+    TimesheetApi api;
+    FirebaseUser current;
     private static final int RC_SIGN_IN = 9001;
-    //private List<Employee> employeeList = new ArrayList<>();
+    private ProgressBar authLoadingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-
+        authLoadingBar = findViewById(R.id.authLoadingBar);
+        authLoadingBar.setVisibility(View.INVISIBLE);
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -72,19 +76,22 @@ public class Authentication extends AppCompatActivity {
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //if(account.getIdToken() != null)
         //firebaseAuthWithGoogle(account.getIdToken());
 
 
         mAuth = FirebaseAuth.getInstance();
-
-
+        if(mAuth.getCurrentUser()!=null) {
+            current = mAuth.getCurrentUser();
+            updateUI(current);
+        }
     }
 
 
     public void onClick(View v) {
         if (v.getId() == R.id.sign_in_button) {
+            authLoadingBar.setVisibility(View.VISIBLE);
             signIn();
         }
     }
@@ -126,13 +133,15 @@ public class Authentication extends AppCompatActivity {
         if(account != null)
         {
             updateDatabase(account);
-             TimesheetApi api = TimesheetApi.getInstance();
-            startActivity(new Intent(this, MainActivity.class));
+            if(Employee.getInstance().getMyReference()!=null) {
+                authLoadingBar.setVisibility(View.INVISIBLE);
+                startActivity(new Intent(this, MainActivity.class));
+            }else Toast.makeText(this, "Something went wrong! Please try again!", Toast.LENGTH_LONG ).show();
         }
     }
 
     private void updateDatabase(FirebaseUser user) {
-        final boolean[] newUser = {false};
+
         db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -149,10 +158,11 @@ public class Authentication extends AppCompatActivity {
                             temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                             temp.setMyReference(Objects.requireNonNull(document.getReference()));
                             temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
-                            //assert temp != null;
-                            //temp.setAccount(user);
-                            //temp.setMyReference(document.getReference());
-                            //loadExistingUser(temp);
+                            temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
+                            temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
+                            if(document.getReference()!=null) {
+                                api = TimesheetApi.getInstance();
+                            }
                         }
                     } else {
                         Log.d(TAG, "Failed with: ", task.getException());
@@ -161,36 +171,29 @@ public class Authentication extends AppCompatActivity {
                 });
     }
 
-    private void loadExistingUser(Employee temp) {
-        Employee employee = Employee.getInstance();
-        employee.setEmail(temp.getEmail());
-        employee.setSupervisor(true);
-        employee.setSupervisorId(temp.getSupervisorId());
-        employee.setScore(temp.getScore());
-        employee.setMyReference(temp.getMyReference());
-        employee.setAccount(temp.getAccount());
-    }
-
     private void addEmployee(FirebaseUser user) {
         Employee employee = Employee.getInstance();
         employee.setEmail(user.getEmail());
         employee.setSupervisor(true);
         employee.setSupervisorId("ZQHSOfw8JdhsmXPDWGnKX86Mj5n1");
         employee.setScore(0);
+        employee.setName(user.getDisplayName());
+        employee.setAchievementsTotal(2);
         db.collection("Employees").document(Objects.requireNonNull(user.getUid())).set(employee)
                 .addOnSuccessListener(aVoid -> Log.d("DB", "DocumentSnapshot added or updated with ID: " + user.getUid()))
                 .addOnFailureListener(e -> Log.w("DB", "Error adding document", e));
         DocumentReference myRef = db.collection("Employees").document(Objects.requireNonNull(user.getUid()));
-        employee.setMyReference(myRef);
+        employee.setMyReference(Objects.requireNonNull(myRef));
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // TimesheetApi api = TimesheetApi.getInstance();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null)
-        updateUI(currentUser);
+       // FirebaseUser currentUser = mAuth.getCurrentUser();
+       // if (currentUser != null)
+       // updateUI(currentUser);
     }
 
     private void firebaseAuthWithGoogle(String idToken) {

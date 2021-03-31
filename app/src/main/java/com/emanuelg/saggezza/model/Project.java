@@ -12,7 +12,7 @@ public class Project {
     private String id;
     private String name;
     private String companyName;
-    private boolean isBillable;
+    private boolean billable;
     private List<DocumentReference> resources = new ArrayList<>();
     private DocumentReference docReference;
 
@@ -79,11 +79,11 @@ public class Project {
 
     //region isBillable
     public boolean isBillable() {
-        return isBillable;
+        return billable;
     }
 
-    public void setIsBillable(boolean isBillable) {
-        this.isBillable = isBillable;
+    public void setBillable(boolean billable) {
+        this.billable = billable;
     }
 
     //endregion

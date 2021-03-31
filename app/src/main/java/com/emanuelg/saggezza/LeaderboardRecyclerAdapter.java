@@ -2,6 +2,7 @@ package com.emanuelg.saggezza;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emanuelg.saggezza.model.Employee;
@@ -20,7 +22,7 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
 
     private Context context;
     private final List<Employee> employeeList;
-    private final TimesheetApi api = TimesheetApi.getInstance();
+    //private final TimesheetApi api = TimesheetApi.getInstance();
 
     public LeaderboardRecyclerAdapter(Context context, List<Employee> employeeList) {
         this.context = context;
@@ -40,8 +42,14 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
     public void onBindViewHolder(@NonNull LeaderboardRecyclerAdapter.ViewHolder holder, int position) {
 
         Employee item = employeeList.get(position);
-        holder.txtIndex.setText(Integer.toString(position + 1) + ".");
-        holder.txtName.setText(item.getEmail());
+        if(item.getEmail().equals(Employee.getInstance().getEmail()))
+        {
+            holder.txtIndex.setTextColor(ContextCompat.getColor(context, R.color.SaggezzaGreen));
+            holder.txtName.setTextColor(ContextCompat.getColor(context, R.color.SaggezzaGreen));
+            holder.txtScore.setTextColor(ContextCompat.getColor(context, R.color.SaggezzaGreen));
+        }
+        holder.txtIndex.setText((position + 1) + ".");
+        holder.txtName.setText(item.getName());
         holder.txtScore.setText(Integer.toString(item.getScore()));
 
     }
@@ -59,10 +67,6 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
 
         public TextView txtIndex,txtName,txtScore;
         public ImageView imgEmployee;
-        //public CheckBox owned;
-        public ProgressBar img_progressBar;
-        // String userId;
-        //String username;
 
         public ViewHolder(@NonNull View itemView, Context ctx) {
             super(itemView);

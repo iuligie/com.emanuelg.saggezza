@@ -32,6 +32,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -90,12 +91,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
         materialDatePicker.addOnPositiveButtonClickListener(selection -> beginDatePicker.setText(materialDatePicker.getHeaderText()));
         //endregion
 
-        /*DatePickerDialog.OnDateSetListener beginDate = (view, year, month, dayOfMonth) -> {
-            cal.set(Calendar.YEAR,year);
-            cal.set(Calendar.MONTH,month);
-            cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-            updateLabel(beginDatePicker,cal);
-        };*/
+
 
 
         AutoCompleteTextView autocompleteProject = findViewById(R.id.autoCompleteProject);
@@ -105,28 +101,36 @@ public class AddTimesheetActivity extends AppCompatActivity {
 
         ArrayAdapter<Project> pAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, api.getMyProjectsList());
         ArrayAdapter<Task> tAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, api.getMyTasksList());
+
         // Specify the layout to use when the list of choices appears
         pAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
         // Apply the array adapter to the dropdown
         autocompleteProject.setAdapter(pAdapter);
         autocompleteTask.setAdapter(tAdapter);
 
-
         autocompleteTask.setEnabled(false);
         dropdownTask.setEnabled(false);
 
+        if(api.getMyProjectsList().size() == 0) {
+            autocompleteProject.setError("No Projects Available");
+            autocompleteTask.setError("No Tasks Available");
+        }
         autocompleteProject.setOnItemClickListener((parentView, view, position, id) -> {
             Object item = parentView.getItemAtPosition(position);
             if (item instanceof Project)
             {
                 dropdownTask.setEnabled(true);
                 selectedProject = (Project) parentView.getItemAtPosition(position);
-                ArrayAdapter<Task> currentTaskAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, api.getTasksByProjectId(selectedProject.getId()));
-                autocompleteTask.setAdapter(currentTaskAdapter);
-                autocompleteTask.setEnabled(true);
+                if(api.getTasksByProjectId(selectedProject.getId()).size() == 0)
+                {
+                    autocompleteTask.setError("No Tasks Available");
+                }else{
+                    ArrayAdapter<Task> currentTaskAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, api.getTasksByProjectId(selectedProject.getId()));
+                    autocompleteTask.setAdapter(currentTaskAdapter);
+                    autocompleteTask.setEnabled(true);
+                }
             }else throw new RuntimeException();
         });
 
@@ -153,10 +157,19 @@ public class AddTimesheetActivity extends AppCompatActivity {
             current.setTaskRef(selectedTask.getDocReference());
             current.setProject(selectedProject);
             current.setTask(selectedTask);
-            Submit(current);
+            if(isValid())
+            {
+                Submit(current);
+            }
         });
 
     }
+
+    private boolean isValid() {
+
+        return true;
+    }
+
     //note that week starts with Monday
     public static LocalDateTime startOfWeek() {
         return LocalDateTime.now(ZoneId.of("GMT"))
@@ -176,22 +189,27 @@ public class AddTimesheetActivity extends AppCompatActivity {
     private void Submit(Timesheet current) {
         CollectionReference ref = FirebaseFirestore.getInstance().collection("Timesheets");
         if (!TextUtils.isEmpty(current.getHours()) && !TextUtils.isEmpty(current.getBeginDate()) && !TextUtils.isEmpty(current.getEndDate()))
+        {
             ref.add(current)
                     .addOnSuccessListener(documentReference ->
                     {
                         current.setId(documentReference.getId());
+                        TimesheetApi.getInstance().getTimesheetList().add(0,current);
+
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                     })
-                    .addOnFailureListener(e -> Log.d("TAG","OnFailure"+ e.getMessage()));
+                    .addOnFailureListener(e -> Log.d("TAG", "OnFailure" + e.getMessage()));
 
+            Employee.getInstance().incrementScore();
+
+            FirebaseFirestore.getInstance().collection("Employees")
+                    .document(Employee.getInstance().getMyReference().getId())
+                    .update("score",Employee.getInstance().getScore());
+        }else{
+            throw new RuntimeException("Message");
+        }
         //progressBar.setVisibility(View.INVISIBLE);
 
-    }
-    private void updateLabel(EditText input, Calendar cal) {
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
-
-        input.setText(sdf.format(cal.getTime()));
     }
 }

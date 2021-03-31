@@ -1,28 +1,36 @@
 package com.emanuelg.saggezza;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
+import android.util.Pair;
 
 import com.emanuelg.saggezza.model.Employee;
 import com.emanuelg.saggezza.model.Project;
 import com.emanuelg.saggezza.model.Task;
 import com.emanuelg.saggezza.model.Timesheet;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.rollbar.android.Rollbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TimesheetApi extends Application {
 
     //region Variables
-    private static TimesheetApi instance = new TimesheetApi();
+    private static TimesheetApi instance;// = new TimesheetApi();
     //private Employee employee;// = Employee.getInstance();
     private String currentTimesheetPos;
     private List<Timesheet> timesheetList;
@@ -37,17 +45,19 @@ public class TimesheetApi extends Application {
         timesheetList = new ArrayList<>();
         myProjectsList = new ArrayList<>();
         myTasksList = new ArrayList<>();
-        Employee.getInstance().getAccount().getUid();
-        loadMyTasks();
-        loadMyProjects();
-        loadMyTimesheets();
-
+        //Employee.getInstance().getAccount().getUid();
+        //if(Employee.getInstance().getMyReference()!=null) {
+            loadMyTasks();
+            loadMyProjects();
+            loadMyTimesheets();
+        //}//else throw new RuntimeException("Employee document reference unavailable");
 
     }
 
     public static synchronized TimesheetApi getInstance() {
+        if(instance == null)
+            instance = new TimesheetApi();
         return instance;
-
     }
 
 
@@ -97,8 +107,10 @@ public class TimesheetApi extends Application {
                             Project item = items.toObject(Project.class);
                             item.setId(items.getId());
                             if(item.getResources().contains(Employee.getInstance().getMyReference()))
+                            {
                                 item.setDocReference(items.getReference());
-                            myProjectsList.add(item);
+                                myProjectsList.add(item);
+                            }
                         }
 
                         //setMyProjectsList(myProjectsList);
@@ -262,6 +274,54 @@ public class TimesheetApi extends Application {
     }
     //endregion
 
+    //region Rank and Avatar
+    public Pair<String, Integer> getRankAndAvatar(int score)
+    {
+        Pair<String, Integer> result;
 
+        if(score >= 100)
+        {
+            result = new Pair<>("Level 2 - Visionary ", R.drawable.rank2);
+        }else if(score >= 200)
+        {
+            result = new Pair<>("Level 3 - Aspiring Explorer ", R.drawable.rank3);
+        }
+        else if(score >= 300)
+        {
+            result = new Pair<>("Level 4 - Established Explorer ", R.drawable.rank4);
+        }
+        else if(score >= 500)
+        {
+            result = new Pair<>("Guru", R.drawable.rank5);
+        }else {
+            result = new Pair<>("Level 1 - Engager ", R.drawable.rank1);
+        }
+        
+        
+        return result;
+    }
+    //endregion
+
+    //Region Achievements
+    public List<Uri> getAchievements(int total) {
+        List<Uri> result = new ArrayList<>();
+        // Create a Cloud Storage reference from the app
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        //StorageReference storageRef = storage.getReference();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
+        for (int i = 1; i <= total; i++) {
+            String strImg = "achievement" + i + ".png";
+            storageRef.child("achievement1.png")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(result::add);
+
+        }
+        if (com.emanuelg.saggezza.BuildConfig.DEBUG && result.size() == 0) {
+            result.add(Uri.parse("gs://emanuel-dissertation.appspot.com/achievement3.png"));
+            //throw new AssertionError("Unable to load achievements");
+        }
+        return result;
+    }
+    //endregion
 
 }
