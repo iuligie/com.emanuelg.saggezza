@@ -26,6 +26,10 @@
     <string name="dash_dateRange">-</string>
     <string name="hint_dateRange">Select Date Range</string>
     <string name="hint_Hours">Enter Hours</string>
-   <!-- <string name="default_web_client_id">386782255131-k78oci6tpmcfdn2h0ms6e33q4a0e16mf.apps.googleusercontent.com</string>
--->
+    <string name="_index">1.</string>
+    <string name="test_LongEmail">corduneanubeatrice09@gmail.com</string>
+    <string name="_testScore">1234</string>
+    <string name="leaderboard">Leaderboard</string>
+    <!-- <string name="default_web_client_id">386782255131-k78oci6tpmcfdn2h0ms6e33q4a0e16mf.apps.googleusercontent.com</string>
+ -->
 </resources>
