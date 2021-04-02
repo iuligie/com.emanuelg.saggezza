@@ -8,6 +8,14 @@
     android:elevation="8dp"
     tools:context=".ui.dashboard.DashboardFragment">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linearProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,13 +50,27 @@
                         android:id="@+id/imgRank"
                         android:layout_width="85dp"
                         android:layout_height="0dp"
+                        android:contentDescription="@string/todo"
                         android:scaleType="fitStart"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/rank1"
-                        tools:src="@tools:sample/avatars"
-                        android:contentDescription="@string/todo" />
+                        app:srcCompat="@drawable/rank1" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_Avatar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:progressTint="@color/SaggezzaGreen"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/imgRank"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtEmployeeName"
@@ -130,7 +152,9 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:progressTint="@color/SaggezzaGreen"
+                    android:visibility="invisible" />
 
             </androidx.cardview.widget.CardView>
 
@@ -185,12 +209,13 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/todo"
                                 android:src="@drawable/achievement1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
-                                android:contentDescription="@string/todo" />
+                                app:srcCompat="@drawable/achievement1" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement2"
@@ -199,13 +224,13 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/todo"
                                 android:src="@drawable/achievement1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement3"
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement1"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
-                                app:srcCompat="@drawable/achievement2"
-                                android:contentDescription="@string/todo" />
+                                app:srcCompat="@drawable/achievement1" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement3"
@@ -214,14 +239,14 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/todo"
                                 android:src="@drawable/achievement1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement4"
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement2"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="0.0"
-                                app:srcCompat="@drawable/achievement3"
-                                android:contentDescription="@string/todo" />
+                                app:srcCompat="@drawable/achievement1" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement4"
@@ -230,14 +255,14 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/todo"
                                 android:src="@drawable/achievement1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/imgAchiement5"
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement3"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:srcCompat="@drawable/achievement4"
-                                android:contentDescription="@string/todo" />
+                                app:srcCompat="@drawable/achievement1" />
 
                             <ImageView
                                 android:id="@+id/imgAchiement5"
@@ -246,14 +271,14 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/todo"
                                 android:src="@drawable/achievement1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/imgAchiement4"
                                 app:layout_constraintTop_toBottomOf="@+id/txtAchievements"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:srcCompat="@drawable/achievement5"
-                                android:contentDescription="@string/todo" />
+                                app:srcCompat="@drawable/achievement1" />
 
                         </LinearLayout>
                     </HorizontalScrollView>

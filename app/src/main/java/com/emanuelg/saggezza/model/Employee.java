@@ -4,9 +4,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class Employee {
@@ -96,8 +99,11 @@ public class Employee {
         this.score = score;
     }
 
-    public void incrementScore() {
-        score+=10;
+    public void incrementScore(boolean onTime)
+    {
+        if (onTime)
+        myReference.update("score", FieldValue.increment(10));
+        else myReference.update("score", FieldValue.increment(-10));
     }
 
     //endregion

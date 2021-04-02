@@ -13,8 +13,8 @@ public class Timesheet {
     private DocumentReference taskRef;
     private String taskId;
     private String projectId;
-    private String beginDate;
-    private String endDate;
+    private String txtDateRange;
+    private String dateRange;
     private String hours;
     private Timestamp submittedOn;
     private Timestamp approvedOn;
@@ -22,6 +22,7 @@ public class Timesheet {
     private String uid;
     private Project project;
     private Task task;
+    private boolean onTime;
     //endregion
 
     public Timesheet() {
@@ -99,19 +100,19 @@ public class Timesheet {
     }
     //endregion
     //region Begin Date
-    public String getBeginDate() {
-        return beginDate;
+    public String getTxtDateRange() {
+        return txtDateRange;
     }
-    public void setBeginDate(String beginDate) {
-        this.beginDate = beginDate;
+    public void setTxtDateRange(String txtDateRange) {
+        this.txtDateRange = txtDateRange;
     }
     //endregion
     //region End Date
-    public String getEndDate() {
-        return endDate;
+    public String getDateRange() {
+        return dateRange;
     }
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setDateRange(String dateRange) {
+        this.dateRange = dateRange;
     }
     //endregion
     //region Hours
@@ -154,5 +155,15 @@ public class Timesheet {
         this.uid = uid;
     }
     //endregion
+    //region OnTime
 
+    public boolean isOnTime() {
+        return onTime;
+    }
+
+    public void setOnTime(boolean onTime) {
+        this.onTime = onTime;
+    }
+
+    //endregion
 }

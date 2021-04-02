@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -37,6 +38,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Authentication extends AppCompatActivity {
@@ -57,7 +59,7 @@ public class Authentication extends AppCompatActivity {
         authLoadingBar.setVisibility(View.INVISIBLE);
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this::onClick);
 
         ImageView imgLogIn = findViewById (R.id.imgLogInPage);
@@ -84,14 +86,16 @@ public class Authentication extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser()!=null) {
             current = mAuth.getCurrentUser();
-            updateUI(current);
+            signIn();
+            updateUI(current, false);
+        }else{
+            authLoadingBar.setVisibility(View.INVISIBLE);
         }
     }
 
 
     public void onClick(View v) {
         if (v.getId() == R.id.sign_in_button) {
-            authLoadingBar.setVisibility(View.VISIBLE);
             signIn();
         }
     }
@@ -129,18 +133,20 @@ public class Authentication extends AppCompatActivity {
             //updateUI(null);
         }
     }
-    private void updateUI(FirebaseUser account) {
+    private void updateUI(FirebaseUser account, boolean isNew) {
         if(account != null)
         {
-            updateDatabase(account);
+            updateDatabase(account, isNew);
             if(Employee.getInstance().getMyReference()!=null) {
-                authLoadingBar.setVisibility(View.INVISIBLE);
                 startActivity(new Intent(this, MainActivity.class));
-            }else Toast.makeText(this, "Something went wrong! Please try again!", Toast.LENGTH_LONG ).show();
+                finish();
+            }
+           // else{ Toast.makeText(this, "Something went wrong! Please try again!", Toast.LENGTH_LONG).show();}
+            authLoadingBar.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void updateDatabase(FirebaseUser user) {
+    private void updateDatabase(FirebaseUser user, boolean isNew) {
 
         db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
                 .get()
@@ -148,7 +154,7 @@ public class Authentication extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         assert document != null;
-                        if (!document.exists()) {
+                        if (isNew) {
                             addEmployee(user);
                         } else {
                             Employee temp = Employee.getInstance();
@@ -160,9 +166,7 @@ public class Authentication extends AppCompatActivity {
                             temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
                             temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
                             temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
-                            if(document.getReference()!=null) {
-                                api = TimesheetApi.getInstance();
-                            }
+                            api = TimesheetApi.getInstance();
                         }
                     } else {
                         Log.d(TAG, "Failed with: ", task.getException());
@@ -178,22 +182,28 @@ public class Authentication extends AppCompatActivity {
         employee.setSupervisorId("ZQHSOfw8JdhsmXPDWGnKX86Mj5n1");
         employee.setScore(0);
         employee.setName(user.getDisplayName());
-        employee.setAchievementsTotal(2);
+        employee.setAchievementsTotal(1);
         db.collection("Employees").document(Objects.requireNonNull(user.getUid())).set(employee)
                 .addOnSuccessListener(aVoid -> Log.d("DB", "DocumentSnapshot added or updated with ID: " + user.getUid()))
                 .addOnFailureListener(e -> Log.w("DB", "Error adding document", e));
         DocumentReference myRef = db.collection("Employees").document(Objects.requireNonNull(user.getUid()));
         employee.setMyReference(Objects.requireNonNull(myRef));
+        //set user's default tasks and projects
+        db.collection("Projects").document("3WB5FEVV2zVCB7qYSFiZ").update("resources",FieldValue.arrayUnion(myRef));
+        db.collection("Projects").document("U4eMDAZewD0hd7gJZ8Ga").update("resources",FieldValue.arrayUnion(myRef));
+        db.collection("Tasks").document("p6MBUQJSMtTd1gckwCuM").update("resources",FieldValue.arrayUnion(myRef));
+        db.collection("Tasks").document("CbFmOW3LoRoOe9Se2SAP").update("resources",FieldValue.arrayUnion(myRef));
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // TimesheetApi api = TimesheetApi.getInstance();
-        // Check if user is signed in (non-null) and update UI accordingly.
-       // FirebaseUser currentUser = mAuth.getCurrentUser();
-       // if (currentUser != null)
-       // updateUI(currentUser);
+        if(mAuth.getCurrentUser()==null)
+        authLoadingBar.setVisibility(View.INVISIBLE);
+
+        else authLoadingBar.setVisibility(View.VISIBLE);
+
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -201,19 +211,16 @@ public class Authentication extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        boolean isNew = Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getAdditionalUserInfo()).isNewUser();
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
+                        updateUI(user, isNew);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
-                       // Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show();
-                        throw new RuntimeException();
-                        //updateUI(null);
+                       Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                     }
-
-                    // ...
                 });
     }
 }

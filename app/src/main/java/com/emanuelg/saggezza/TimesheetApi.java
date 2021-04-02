@@ -302,7 +302,7 @@ public class TimesheetApi extends Application {
     }
     //endregion
 
-    //Region Achievements
+    //region Achievements
     public List<Uri> getAchievements(int total) {
         List<Uri> result = new ArrayList<>();
         // Create a Cloud Storage reference from the app
@@ -316,7 +316,7 @@ public class TimesheetApi extends Application {
                     .addOnSuccessListener(result::add);
 
         }
-        if (com.emanuelg.saggezza.BuildConfig.DEBUG && result.size() == 0) {
+        if (result.size() == 0) {
             result.add(Uri.parse("gs://emanuel-dissertation.appspot.com/achievement3.png"));
             //throw new AssertionError("Unable to load achievements");
         }
@@ -324,4 +324,13 @@ public class TimesheetApi extends Application {
     }
     //endregion
 
+    //region Delete Timesheet
+    public void deleteItem(String itemId)
+    {
+        db.collection("Timesheets").document(itemId)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d("DELETE-LOG", "DocumentSnapshot successfully deleted!"))
+                .addOnFailureListener(e -> Log.w("DELETE-LOG", "Error deleting document", e));
+    }
+    //endregion
 }

@@ -7,6 +7,15 @@
     android:background="?android:attr/colorBackground"
     tools:context=".AddTimesheetActivity">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linearProgressIndicator_AddTimesheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dropdownProject"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
@@ -54,7 +63,9 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="250dp"
         android:layout_marginEnd="10dp"
+        app:errorEnabled="true"
         android:focusable="false"
+        app:endIconMode="clear_text"
         android:importantForAutofill="no"
         android:inputType="none"
         android:longClickable="false">
@@ -65,9 +76,9 @@
             android:layout_height="wrap_content"
             android:autofillHints="Select Date Range"
             android:focusable="false"
+            app:errorEnabled="true"
             android:hint="@string/hint_dateRange"
             android:longClickable="false"
-            app:errorEnabled="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="?android:attr/textColorPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -80,6 +91,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="350dp"
         android:layout_marginEnd="10dp"
+        app:errorEnabled="true"
         android:autofillHints="Enter Hours"
         android:hint="@string/hint_Hours"
         android:textColor="?android:attr/textColorPrimary">

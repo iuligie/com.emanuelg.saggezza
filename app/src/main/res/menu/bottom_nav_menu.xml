@@ -5,17 +5,13 @@
         android:id="@+id/navigation_home"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:title="@string/my_timesheets" />
-
     <item
-        android:title=""/>
+        android:checkable="false"
+        android:enabled="false"
+        android:title=""
+        android:visible="true" />
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_dashboard" />
-
-   <!-- <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_baseline_check_circle_24"
-        android:title="Submit Timesheet" /> -->
-
 </menu>

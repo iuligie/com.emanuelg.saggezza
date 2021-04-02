@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.emanuelg.saggezza.model.Timesheet;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +50,7 @@ public class TimesheetRecyclerAdapter extends RecyclerView.Adapter<TimesheetRecy
         holder.txtTaskName.setText(item.getTask().getName());
         holder.txtProjectName.setText(item.getProject().getName());
         //holder.txtDate.setText(MessageFormat.format("{0} - {1}",item.getBeginDate().substring(0,5), item.getEndDate().substring(0,5)));
-        holder.txtDate.setText(item.getBeginDate());
+        holder.txtDate.setText(item.getTxtDateRange());
         holder.txtHours.setText(item.getHours());
 
         //imageUrl = item.getImageUrl();
@@ -59,7 +58,10 @@ public class TimesheetRecyclerAdapter extends RecyclerView.Adapter<TimesheetRecy
         Date date = new Date(Long.parseLong(Long.toString(miliseconds)) *  1000L);
         String strDate = new SimpleDateFormat("dd/MM/yyyy", Locale.UK).format(date);
         holder.txtEntryDate.setText(strDate);
-        holder.imageView.setImageResource(R.drawable.badge);
+        if(item.isOnTime())
+        {
+            holder.imageView.setImageResource(R.drawable.badge);
+        }else holder.imageView.setImageResource(R.drawable.ic_error_24);
 //        holder.img_progressBar.setVisibility(View.VISIBLE);
 
     }

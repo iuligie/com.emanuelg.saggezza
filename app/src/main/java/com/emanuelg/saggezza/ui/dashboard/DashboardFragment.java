@@ -1,6 +1,5 @@
 package com.emanuelg.saggezza.ui.dashboard;
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,38 +19,35 @@ import com.emanuelg.saggezza.LeaderboardRecyclerAdapter;
 import com.emanuelg.saggezza.R;
 import com.emanuelg.saggezza.TimesheetApi;
 import com.emanuelg.saggezza.model.Employee;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.OrderBy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
     private List<Employee> employeeList =new ArrayList<>();
     private RecyclerView recyclerView;
     private LeaderboardRecyclerAdapter leaderboardRecyclerAdapter;
-    ProgressBar progressBar;
+    //ProgressBar progressBar;
+    LinearProgressIndicator progressIndicator;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        progressBar = root.findViewById(R.id.progressBar_Leaderboard);
+        //progressBar = root.findViewById(R.id.progressBar_Leaderboard);
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        progressIndicator =root.findViewById(R.id.linearProgressIndicator);
 
         return root;
     }
@@ -64,6 +59,8 @@ public class DashboardFragment extends Fragment {
         TextView txtEmployeeName= view.findViewById(R.id.txtEmployeeName);
         TextView txtLevel = view.findViewById(R.id.txtLevel);
         ImageView imgRank = view.findViewById(R.id.imgRank);
+        //ProgressBar progressBar_Avatar = view.findViewById(R.id.progressBar_Avatar);
+
         Pair<String, Integer> rankAndAvatar = TimesheetApi.getInstance().getRankAndAvatar(Employee.getInstance().getScore());
         txtLevel.setText(rankAndAvatar.first);
         Picasso.get()
@@ -71,6 +68,7 @@ public class DashboardFragment extends Fragment {
                 .placeholder(R.drawable.rank1)
                 .resize(300, 300)
                 .into(imgRank);
+
         txtEmployeeName.setText(Employee.getInstance().getAccount().getDisplayName());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -122,15 +120,32 @@ public class DashboardFragment extends Fragment {
         LoadAchievements(imgs);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        progressIndicator.setVisibility(View.GONE);
+    }
+
     private void LoadAchievements(List<ImageView> imgs) {
 
-        List<Uri> res=getAchievements(imgs.size()+1);//= TimesheetApi.getInstance().getAchievements(imgs.size()+1);
+        List<Uri> res=getAchievements(imgs.size()+1);
         for (int i=0;i<imgs.size();i++) {
             Picasso.get()
                     .load(res.get(i).toString())
-                    .placeholder(R.drawable.achievement5)
                     .resize(300, 300)
-                    .into(imgs.get(i));
+                    .into(imgs.get(i), new Callback(){
+
+                        @Override
+                        public void onSuccess() {
+                            //progressBar.setVisibility(View.INVISIBLE);
+                            //topProgressIndicator.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
         }
 
     }
@@ -153,7 +168,7 @@ public class DashboardFragment extends Fragment {
         //employeeList.add(Employee.getInstance());
         //if (employeeList.size()!=0)
         InitializeAdapter();
-        progressBar.setVisibility(View.INVISIBLE);
+       //progressBar.setVisibility(View.INVISIBLE);
         /*else{
             employeeList.add(Employee.getInstance());
             InitializeAdapter();
