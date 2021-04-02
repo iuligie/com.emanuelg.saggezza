@@ -15,6 +15,8 @@ public class Timesheet {
     private String projectId;
     private String txtDateRange;
     private String dateRange;
+    private Long startDate;
+    private Long endDate;
     private String hours;
     private Timestamp submittedOn;
     private Timestamp approvedOn;
@@ -99,7 +101,7 @@ public class Timesheet {
         return project;
     }
     //endregion
-    //region Begin Date
+    //region Date Range in user friendly text
     public String getTxtDateRange() {
         return txtDateRange;
     }
@@ -107,7 +109,7 @@ public class Timesheet {
         this.txtDateRange = txtDateRange;
     }
     //endregion
-    //region End Date
+    //region Date Range unformatted
     public String getDateRange() {
         return dateRange;
     }
@@ -156,7 +158,6 @@ public class Timesheet {
     }
     //endregion
     //region OnTime
-
     public boolean isOnTime() {
         return onTime;
     }
@@ -164,6 +165,26 @@ public class Timesheet {
     public void setOnTime(boolean onTime) {
         this.onTime = onTime;
     }
+    //endregion
+
+    //region Computer Friendly Dates
+
+    public Long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
+    }
 
     //endregion
+
 }

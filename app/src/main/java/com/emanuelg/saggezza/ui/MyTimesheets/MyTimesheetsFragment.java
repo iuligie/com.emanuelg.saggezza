@@ -62,6 +62,7 @@ public class MyTimesheetsFragment extends Fragment {
 
                 if(direction==ItemTouchHelper.LEFT)
                 {
+
                     Toast.makeText(getActivity(), "Swipe Left - Update Timesheet", Toast.LENGTH_LONG).show();
                     timesheetRecyclerAdapter.notifyDataSetChanged();
                 }

@@ -9,7 +9,7 @@
         android:label="My Saggezza Timesheet"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ExperimentV2">
+        android:theme="@style/Theme.SaggezzaTimesheets">
         <activity android:name=".AddTimesheetActivity" />
         <activity android:name=".Authentication">
             <intent-filter>

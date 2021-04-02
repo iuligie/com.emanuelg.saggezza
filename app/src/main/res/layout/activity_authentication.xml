@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/cardBackground"
     android:elevation="8dp"
-    android:theme="@style/ThemeOverlay.ExperimentV2.FullscreenContainer"
+    android:theme="@style/ThemeOverlay.SaggezzaTimesheets.FullscreenContainer"
     tools:context=".Authentication">
 
     <!-- The primary full-screen view. This can be replaced with whatever view

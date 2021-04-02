@@ -195,7 +195,7 @@ public class DashboardFragment extends Fragment {
                     .addOnSuccessListener(result::add);
 
         }
-        if (com.emanuelg.saggezza.BuildConfig.DEBUG && result.size() == 0) {
+        if (result.size() == 0) {
             result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement1.png?alt=media&token=ad9b5aba-00de-4177-9bba-8c0b459b9973"));
             if (total >= 2)
                 result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement2.png?alt=media&token=ce2a5a65-f459-4bdf-ba9e-4f36daac42d2"));

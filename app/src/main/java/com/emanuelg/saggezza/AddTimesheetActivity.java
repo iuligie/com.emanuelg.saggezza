@@ -174,6 +174,8 @@ public class AddTimesheetActivity extends AppCompatActivity {
                 current.setTaskId(selectedTask.getId());
                 current.setTxtDateRange(inputDatePicker.getText().toString());
                 current.setDateRange(toLocalDateTime(startDate).toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + toLocalDateTime(endDate).toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                current.setStartDate(startDate);
+                current.setEndDate(endDate);
                 current.setApprovedOn(Timestamp.now());
                 current.setSubmittedOn(Timestamp.now());
                 current.setUid(Employee.getInstance().getAccount().getUid());

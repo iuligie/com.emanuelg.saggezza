@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ExperimentV2" parent="Theme.MaterialComponents">
+    <style name="Theme.SaggezzaTimesheets" parent="Theme.MaterialComponents">
 
         <!-- Surface (Background) color-->
         <item name="surface">@color/colorDarkSurface</item>
@@ -18,7 +18,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThemeOverlay.ExperimentV2.FullscreenContainer" parent="">
+    <style name="ThemeOverlay.SaggezzaTimesheets.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
         <item name="fullscreenTextColor">@color/light_blue_A400</item>
     </style>
