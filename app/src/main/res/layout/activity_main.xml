@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/todo"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_name_dark"
             app:backgroundTint="@color/SaggezzaGreen"
             app:layout_anchor="@id/bottomAppBar"
             app:maxImageSize="35dp" />

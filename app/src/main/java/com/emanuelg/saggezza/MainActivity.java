@@ -1,5 +1,6 @@
 package com.emanuelg.saggezza;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,13 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.emanuelg.saggezza.ui.dialog.AddTimesheet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,14 +60,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.w("TOKEN ERROR", "Fetching FCM registration token failed", task.getException());
                         return;
                     }
-
                     // Get new FCM registration token
                     String token = task.getResult();
 
-                    // Log and toast
-                    //String msg = getString("Message",token);
                     Log.d("TOKEN", token);
-                    //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                 });
         //endregion
 
@@ -71,8 +72,22 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), AddTimesheetActivity.class);
                     startActivity(intent);
-                    finish();
         });
+
+        /*fab.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                AddTimesheet newFragment = new AddTimesheet();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
+                getSupportActionBar().hide();
+                return false;
+            }
+        });*/
+
+
         BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
         // Passing each dropdownProject ID as a set of Ids because each
         // dropdownProject should be considered as top level destinations.
@@ -88,6 +103,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 }

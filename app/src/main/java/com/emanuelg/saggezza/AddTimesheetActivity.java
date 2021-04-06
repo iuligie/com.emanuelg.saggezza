@@ -2,8 +2,12 @@ package com.emanuelg.saggezza;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
@@ -12,7 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
 
 import com.emanuelg.saggezza.model.Employee;
@@ -32,6 +39,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -62,7 +70,34 @@ public class AddTimesheetActivity extends AppCompatActivity {
         dropdownTask = findViewById(R.id.dropdownTask);
         inputDatePicker = findViewById(R.id.inputDateRange);
         inputHours = findViewById(R.id.inputHours);
-        Button btnSubmitTimesheet = findViewById(R.id.btnSubmitTimesheet);
+
+        inputHours.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().equals("") && Integer.parseInt(s.toString()) > 40)
+                {
+                    inputHours.setError("Invalid Input");
+                    inputHours.getText().clear();
+                }
+            }
+        });
+
+        ActionBar toolbar= getSupportActionBar();
+        toolbar.setTitle("Submit your timesheet");
+        toolbar.setDisplayHomeAsUpEnabled(true);
+        toolbar.setHomeButtonEnabled(true);
+        toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24);
+
 
         //CalendarConstraints
         CalendarConstraints.Builder constraintBuilder = new CalendarConstraints.Builder();
@@ -102,11 +137,18 @@ public class AddTimesheetActivity extends AppCompatActivity {
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             assert selection.first != null;
             assert selection.second != null;
-            inputDatePicker.setError(null);
-            startDate = selection.first;
-            endDate = selection.second;
-            inputDatePicker.setText(materialDatePicker.getHeaderText());
-            inputDatePicker.setEnabled(true);
+            long difference = ChronoUnit.DAYS.between(toLocalDateTime(selection.first),toLocalDateTime(selection.second));
+            if(difference>=6)
+            {
+                inputDatePicker.setError("Invalid Selection");
+            }
+            else
+            {
+                startDate = selection.first;
+                endDate = selection.second;
+                inputDatePicker.setText(materialDatePicker.getHeaderText());
+                inputDatePicker.setEnabled(true);
+            }
         });
         //endregion
 
@@ -149,13 +191,6 @@ public class AddTimesheetActivity extends AppCompatActivity {
             }else throw new RuntimeException();
         });
 
-      /*
-      autocompleteTask.setOnItemClickListener((parent, view, position, id) ->
-        {
-            selectedTask = (Task) parent.getSelectedItem();
-            autocompleteTask.setError(null);
-        });*/
-
         autocompleteTask.setOnItemClickListener((parent, view, position, id) ->
         {
             autocompleteTask.setError(null);
@@ -164,7 +199,9 @@ public class AddTimesheetActivity extends AppCompatActivity {
         });
         autocompleteProject.setOnDismissListener(() -> autocompleteTask.getText().clear());
 
-        btnSubmitTimesheet.setOnClickListener(v -> {
+   }
+
+    private void Save() {
             progressIndicator.setVisibility(View.VISIBLE);
             if(isValid())
             {
@@ -191,8 +228,28 @@ public class AddTimesheetActivity extends AppCompatActivity {
                 Toast.makeText(this, "Make sure all fields are filled!", Toast.LENGTH_LONG).show();
                 progressIndicator.setVisibility(View.GONE);
             }
-        });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dialog_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            //Toast.makeText(this, "Submission was successful", Toast.LENGTH_LONG).show();
+        Save();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        progressIndicator.setVisibility(View.VISIBLE);
+        return super.onSupportNavigateUp();
     }
 
     private boolean isValid() {

@@ -101,8 +101,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            app:errorEnabled="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:errorEnabled="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,9 +119,11 @@
         android:text="@string/txtSubmitButton"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="?android:attr/textColorPrimary"
+        android:visibility="gone"
         app:cornerRadius="24dp"
         app:rippleColor="@color/SaggezzaGreen"
-        tools:text="Submit" />
+        tools:text="Submit"
+        tools:visibility="gone" />
 
 
 </FrameLayout>

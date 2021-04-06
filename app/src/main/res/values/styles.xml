@@ -4,11 +4,17 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-    <style name="Widget.Theme.ExperimentV2.ButtonBar.Fullscreen" parent="">
+    <style name="Widget.Theme.SaggezzaTimesheets.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
     <style name="SpinnerStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <item name="android:textColor">@color/SaggezzaGreen</item>
     </style>
+    <style name="SaggezzaTimesheets.Slide" parent="">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
 </resources>

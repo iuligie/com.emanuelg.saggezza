@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,17 +39,18 @@ public class DashboardFragment extends Fragment {
     private LeaderboardRecyclerAdapter leaderboardRecyclerAdapter;
     //ProgressBar progressBar;
     LinearProgressIndicator progressIndicator;
+    ProgressBar progressBar_Avatar;
+    ProgressBar progressBar_Leaderboard;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        //progressBar = root.findViewById(R.id.progressBar_Leaderboard);
-
-        //progressBar.setVisibility(View.VISIBLE);
         progressIndicator =root.findViewById(R.id.linearProgressIndicator);
-
+        progressBar_Avatar = root.findViewById(R.id.progressBar_Avatar);
+        progressBar_Avatar.setVisibility(View.VISIBLE);
+        progressBar_Leaderboard = root.findViewById(R.id.progressBar_Leaderboard);
         return root;
     }
 
@@ -59,21 +61,30 @@ public class DashboardFragment extends Fragment {
         TextView txtEmployeeName= view.findViewById(R.id.txtEmployeeName);
         TextView txtLevel = view.findViewById(R.id.txtLevel);
         ImageView imgRank = view.findViewById(R.id.imgRank);
-        //ProgressBar progressBar_Avatar = view.findViewById(R.id.progressBar_Avatar);
 
         Pair<String, Integer> rankAndAvatar = TimesheetApi.getInstance().getRankAndAvatar(Employee.getInstance().getScore());
         txtLevel.setText(rankAndAvatar.first);
         Picasso.get()
                 .load(rankAndAvatar.second)
-                .placeholder(R.drawable.rank1)
                 .resize(300, 300)
-                .into(imgRank);
+                .into(imgRank, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar_Avatar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
 
         txtEmployeeName.setText(Employee.getInstance().getAccount().getDisplayName());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         InitializeData();
-
+        progressBar_Leaderboard.setVisibility(View.GONE);
+        progressBar_Avatar.setVisibility(View.GONE);
         ImageView imgAchievement1 = view.findViewById(R.id.imgAchiement1);
         ImageView imgAchievement2 = view.findViewById(R.id.imgAchiement2);
         ImageView imgAchievement3 = view.findViewById(R.id.imgAchiement3);
@@ -82,6 +93,7 @@ public class DashboardFragment extends Fragment {
 
         int achievementsTotal = Employee.getInstance().getAchievementsTotal();
         List<ImageView> imgs = new ArrayList<>();
+        //region Achievements
         if(achievementsTotal == 2)
         {
             imgs.add(imgAchievement1);
@@ -110,7 +122,8 @@ public class DashboardFragment extends Fragment {
             imgs.add(imgAchievement3);
             imgs.add(imgAchievement4);
             imgs.add(imgAchievement5);
-        }else{
+        }
+        else{
             imgs.add(imgAchievement1);
             imgAchievement2.setVisibility(View.GONE);
             imgAchievement3.setVisibility(View.GONE);
@@ -118,6 +131,7 @@ public class DashboardFragment extends Fragment {
             imgAchievement5.setVisibility(View.GONE);
         }
         LoadAchievements(imgs);
+        //endregion
     }
 
     @Override
@@ -137,8 +151,7 @@ public class DashboardFragment extends Fragment {
 
                         @Override
                         public void onSuccess() {
-                            //progressBar.setVisibility(View.INVISIBLE);
-                            //topProgressIndicator.setVisibility(View.GONE);
+                            progressIndicator.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -164,16 +177,9 @@ public class DashboardFragment extends Fragment {
                         InitializeAdapter();
                     }
                 });
-        //for (int i=0;i<=5;i++)
-        //employeeList.add(Employee.getInstance());
-        //if (employeeList.size()!=0)
+
         InitializeAdapter();
-       //progressBar.setVisibility(View.INVISIBLE);
-        /*else{
-            employeeList.add(Employee.getInstance());
-            InitializeAdapter();
-            //throw new RuntimeException("Something went wrong!");
-        }*/
+
     }
 
     private void InitializeAdapter() {
@@ -186,7 +192,7 @@ public class DashboardFragment extends Fragment {
         List<Uri> result = new ArrayList<>();
         // Create a Cloud Storage reference from the app
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        //StorageReference storageRef = storage.getReference();
+
         StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
         for (int i = 1; i <= total; i++) {
             String strImg = "achievement" + i + ".png";

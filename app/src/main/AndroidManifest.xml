@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emanuelg.saggezza">
-    <uses-permission
-        android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="My Saggezza Timesheet"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_saggezza"
+        android:label="My Timesheets"
+        android:roundIcon="@mipmap/ic_saggezza_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SaggezzaTimesheets">
-        <activity android:name=".AddTimesheetActivity" />
-        <activity android:name=".Authentication">
+        <activity android:name=".Authentication"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AddTimesheetActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 

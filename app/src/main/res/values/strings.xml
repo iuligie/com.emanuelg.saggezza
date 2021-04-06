@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ExperimentV2</string>
+    <string name="app_name">My Timesheets</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -31,6 +31,8 @@
     <string name="_testScore">1234</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="strWelcome">Welcome!</string>
     <!-- <string name="default_web_client_id">386782255131-k78oci6tpmcfdn2h0ms6e33q4a0e16mf.apps.googleusercontent.com</string>
  -->
 </resources>

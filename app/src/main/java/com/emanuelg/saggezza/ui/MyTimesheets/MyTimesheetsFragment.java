@@ -62,14 +62,14 @@ public class MyTimesheetsFragment extends Fragment {
 
                 if(direction==ItemTouchHelper.LEFT)
                 {
-
+                    //TODO Implement Update Timesheet on Swipe Left
                     Toast.makeText(getActivity(), "Swipe Left - Update Timesheet", Toast.LENGTH_LONG).show();
                     timesheetRecyclerAdapter.notifyDataSetChanged();
                 }
                 if(direction==ItemTouchHelper.RIGHT)
                 {
                     new MaterialAlertDialogBuilder(getContext())
-                            .setTitle("Confirmation")
+                            .setTitle("Are you sure?")
                             .setMessage("Are you sure you want to delete this entry?\nThis action can not be undone!")
                             .setPositiveButton("Yes", (dialog, which) -> {
                                 TimesheetApi.getInstance().deleteItem(timesheetRecyclerAdapter.getItemAt(viewHolder.getAdapterPosition()).getId());

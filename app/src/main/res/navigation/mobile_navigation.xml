@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.emanuelg.saggezza.ui.MyTimesheets.MyTimesheetsFragment"
-        android:label="@string/title_home"
+        android:label="My Timesheets"
         tools:layout="@layout/fragment_my_timesheets" />
 
     <fragment
