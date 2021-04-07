@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground"
     tools:context=".ui.MyTimesheets.MyTimesheetsFragment">
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/linearProgressIndicator_Timesheets"
         android:layout_width="match_parent"
@@ -27,18 +28,18 @@
 
     <TextView
         android:id="@+id/txtNoEntries"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/press_to_add_a_timesheet"
         android:textAlignment="center"
-        android:textColor="?android:attr/textColorPrimaryDisableOnly"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/SaggezzaGreen"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/entryRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="No timesheets submited" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

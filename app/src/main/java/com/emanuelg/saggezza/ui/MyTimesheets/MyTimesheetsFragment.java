@@ -23,8 +23,6 @@ import com.emanuelg.saggezza.TimesheetRecyclerAdapter;
 import com.emanuelg.saggezza.ui.dialog.UpdateTimesheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,13 +32,14 @@ public class MyTimesheetsFragment extends Fragment {
 
     private TimesheetRecyclerAdapter timesheetRecyclerAdapter;
     LinearProgressIndicator progressIndicator;
+    TextView noTimesheetEntry;
     //endregion
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_timesheets, container, false);
 
-        TextView noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
+        noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
         RecyclerView recyclerView = root.findViewById(R.id.entryRecycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -48,7 +47,9 @@ public class MyTimesheetsFragment extends Fragment {
         timesheetRecyclerAdapter = new TimesheetRecyclerAdapter(getContext(), TimesheetApi.getInstance().getTimesheetList());
         recyclerView.setAdapter(timesheetRecyclerAdapter);
         timesheetRecyclerAdapter.notifyDataSetChanged();
-        if(TimesheetApi.getInstance().getTimesheetList().size() == 0)noTimesheetEntry.setVisibility(View.VISIBLE);
+        if(timesheetRecyclerAdapter.getItemCount() == 0)
+            noTimesheetEntry.setVisibility(View.VISIBLE);
+        else noTimesheetEntry.setVisibility(View.GONE);
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -85,6 +86,7 @@ public class MyTimesheetsFragment extends Fragment {
                                 timesheetRecyclerAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                                 timesheetRecyclerAdapter.notifyDataSetChanged();
                                 Toast.makeText(getActivity(), "Swipe Right - Delete", Toast.LENGTH_LONG).show();
+                                if(timesheetRecyclerAdapter.getItemCount() == 0)noTimesheetEntry.setVisibility(View.VISIBLE);
                             }).setNegativeButton("Cancel", (dialog, which) -> timesheetRecyclerAdapter.notifyDataSetChanged())
                             .show();
                 }
@@ -112,6 +114,9 @@ public class MyTimesheetsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(timesheetRecyclerAdapter.getItemCount() == 0)
+            noTimesheetEntry.setVisibility(View.VISIBLE);
+        else noTimesheetEntry.setVisibility(View.GONE);
         timesheetRecyclerAdapter.notifyDataSetChanged();
         progressIndicator.setVisibility(View.GONE);
     }

@@ -33,6 +33,7 @@
     <string name="logout">Logout</string>
     <string name="save">Save</string>
     <string name="strWelcome">Welcome!</string>
+    <string name="press_to_add_a_timesheet">Press +to add a timesheet</string>
     <!-- <string name="default_web_client_id">386782255131-k78oci6tpmcfdn2h0ms6e33q4a0e16mf.apps.googleusercontent.com</string>
  -->
 </resources>

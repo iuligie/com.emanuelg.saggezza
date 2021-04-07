@@ -13,6 +13,7 @@ import com.emanuelg.saggezza.model.Timesheet;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -327,6 +328,7 @@ public class TimesheetApi extends Application {
     //region Delete Timesheet
     public void deleteItem(String itemId)
     {
+        Employee.getInstance().getMyReference().update("score", FieldValue.increment(-10));
         db.collection("Timesheets").document(itemId)
                 .delete()
                 .addOnSuccessListener(aVoid -> Log.d("DELETE-LOG", "DocumentSnapshot successfully deleted!"))
