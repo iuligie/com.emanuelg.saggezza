@@ -72,9 +72,11 @@ public class Authentication extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
-
-        if (this.getReferrer()!= null && GoogleSignIn.getLastSignedInAccount(this) != null && mAuth.getCurrentUser() != null)
+        boolean signOut = getIntent().getBooleanExtra("SignOut", false);
+        if (signOut)
         {
+            //resetting the data repository
+            TimesheetApi.getInstance().clearInstance();
             mGoogleSignInClient.signOut();
             mAuth.signOut();
         }

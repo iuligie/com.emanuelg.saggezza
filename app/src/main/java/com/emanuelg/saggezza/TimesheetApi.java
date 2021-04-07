@@ -332,5 +332,14 @@ public class TimesheetApi extends Application {
                 .addOnSuccessListener(aVoid -> Log.d("DELETE-LOG", "DocumentSnapshot successfully deleted!"))
                 .addOnFailureListener(e -> Log.w("DELETE-LOG", "Error deleting document", e));
     }
+
+    public void clearInstance() {
+
+        timesheetList.clear();
+        myProjectsList.clear();
+        myTasksList.clear();
+        employeeList.clear();
+        instance=null;
+    }
     //endregion
 }

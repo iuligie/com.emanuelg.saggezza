@@ -84,7 +84,8 @@ public class AddTimesheetActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals("") && Integer.parseInt(s.toString()) > 40)
+
+                if(!s.toString().trim().isEmpty() && Integer.parseInt(s.toString()) > 40)
                 {
                     inputHours.setError("Invalid Input");
                     inputHours.getText().clear();
@@ -93,13 +94,14 @@ public class AddTimesheetActivity extends AppCompatActivity {
         });
 
         ActionBar toolbar= getSupportActionBar();
+        assert toolbar != null;
         toolbar.setTitle("Submit your timesheet");
         toolbar.setDisplayHomeAsUpEnabled(true);
         toolbar.setHomeButtonEnabled(true);
         toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24);
 
 
-        //CalendarConstraints
+        //Calendar Constraints to limit the range to weekdays only
         CalendarConstraints.Builder constraintBuilder = new CalendarConstraints.Builder();
         constraintBuilder.setValidator(new DateValidatorWeekdays());
 
@@ -109,20 +111,14 @@ public class AddTimesheetActivity extends AppCompatActivity {
 
         long today = MaterialDatePicker.todayInUtcMilliseconds();
         calendar.setTimeInMillis(today);
-
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
-        long january = calendar.getTimeInMillis();
-
+        calendar.set(Calendar.MONTH, Calendar.FEBRUARY);
         calendar.set(Calendar.MONTH, Calendar.MARCH);
-        long march = calendar.getTimeInMillis();
-
-        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-        long december = calendar.getTimeInMillis();
-
+        calendar.set(Calendar.MONTH, Calendar.APRIL);
+        calendar.set(Calendar.MONTH, Calendar.JUNE);
         //region Material Date Picker
         Long startOfCurrentWeek = toMills(startOfWeek());
         Long endOfCurrentWeek = toMills(endOfWeek());
-        //MaterialDatePicker
 
         builder.setTitleText("SELECT A DATE RANGE");
         builder.setSelection(new Pair<>(startOfCurrentWeek, endOfCurrentWeek));
@@ -291,7 +287,6 @@ public class AddTimesheetActivity extends AppCompatActivity {
     {
         return Instant.ofEpochMilli(epoch).atZone(ZoneId.of("GMT")).toLocalDateTime();
     }
-
     //note that week ends with Friday
     public static LocalDateTime endOfWeek() {
         return startOfWeek()

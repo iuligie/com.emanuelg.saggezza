@@ -9,9 +9,9 @@ import java.util.TimeZone;
 /** A {@link DateValidator} that only allows dates from a given point onward to be clicked. */
 public class DateValidatorWeekdays implements DateValidator {
 
-    DateValidatorWeekdays() {}
+    public DateValidatorWeekdays() {}
 
-    private Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    private final Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     public static final Creator<DateValidatorWeekdays> CREATOR =
             new Creator<DateValidatorWeekdays>() {
@@ -52,7 +52,7 @@ public class DateValidatorWeekdays implements DateValidator {
 
     @Override
     public int hashCode() {
-        Object[] hashedFields = {};
+       final Object[] hashedFields = {};
         return Arrays.hashCode(hashedFields);
     }
 }
