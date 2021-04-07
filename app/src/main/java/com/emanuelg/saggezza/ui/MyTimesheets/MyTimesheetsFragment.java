@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.emanuelg.saggezza.R;
 import com.emanuelg.saggezza.TimesheetApi;
@@ -33,6 +34,7 @@ public class MyTimesheetsFragment extends Fragment {
     private TimesheetRecyclerAdapter timesheetRecyclerAdapter;
     LinearProgressIndicator progressIndicator;
     TextView noTimesheetEntry;
+    SwipeRefreshLayout swipeRefresh;
     //endregion
 
     public View onCreateView(@NonNull LayoutInflater inflater,
