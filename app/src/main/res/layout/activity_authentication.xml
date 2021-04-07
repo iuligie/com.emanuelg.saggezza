@@ -38,13 +38,13 @@
 
     <ImageView
         android:id="@+id/imgLogInPage"
-        android:layout_width="144dp"
-        android:layout_height="127dp"
+        android:layout_width="250dp"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
 
         android:layout_marginTop="100dp"
         android:contentDescription="@string/saggezza_brand_image"
-        tools:srcCompat="@drawable/icon_saggezza" />
+        tools:srcCompat="@drawable/image_1" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btnSignIn"
