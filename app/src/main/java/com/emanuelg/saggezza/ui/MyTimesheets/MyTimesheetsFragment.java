@@ -1,6 +1,7 @@
 package com.emanuelg.saggezza.ui.MyTimesheets;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,14 @@ public class MyTimesheetsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_timesheets, container, false);
 
+        swipeRefresh = root.findViewById(R.id.swipeLayout);
+        swipeRefresh.setOnRefreshListener(() -> {
+            timesheetRecyclerAdapter.notifyDataSetChanged();
+            new Handler().postDelayed(() -> {
+                // Stop animation (This will be after 3 seconds)
+                swipeRefresh.setRefreshing(false);
+            }, 3000);
+        });
         noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
         RecyclerView recyclerView = root.findViewById(R.id.entryRecycler);
         recyclerView.setHasFixedSize(true);
