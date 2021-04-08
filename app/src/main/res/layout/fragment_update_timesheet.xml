@@ -21,6 +21,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="16dp"
             app:contentInsetStartWithNavigation="0dp"
+            app:menu="@menu/dialog_menu"
             app:navigationIcon="@drawable/ic_close_24" />
 
     </com.google.android.material.appbar.AppBarLayout>

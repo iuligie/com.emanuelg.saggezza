@@ -16,6 +16,7 @@
         <activity
             android:name=".AddTimesheetActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.SaggezzaTimesheets.NoActionBar"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.SplashActivity"
             android:screenOrientation="portrait">

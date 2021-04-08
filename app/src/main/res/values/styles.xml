@@ -5,4 +5,9 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
+    <style name="Theme.SaggezzaTimesheets.NoActionBar" parent="Theme.SaggezzaTimesheets">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
 </resources>

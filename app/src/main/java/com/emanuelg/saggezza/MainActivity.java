@@ -67,20 +67,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
         });
 
-        /*fab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                UpdateTimesheet newFragment = new UpdateTimesheet();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
-                getSupportActionBar().hide();
-                return false;
-            }
-        });*/
-
-
         BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
         // Passing each dropdownProject ID as a set of Ids because each
         // dropdownProject should be considered as top level destinations.

@@ -18,9 +18,14 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThemeOverlay.SaggezzaTimesheets.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
-        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+    <style name="Theme.SaggezzaTimesheets.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/SaggezzaGreen</item>
+        <item name="fullscreenTextColor">?android:textColorPrimary</item>
+        <!-- <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item> -->
     </style>
-
+    <style name="Theme.NoActionBar" parent="">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
 </resources>

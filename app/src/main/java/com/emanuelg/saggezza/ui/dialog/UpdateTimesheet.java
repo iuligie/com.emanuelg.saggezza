@@ -22,17 +22,13 @@ import androidx.fragment.app.DialogFragment;
 import com.emanuelg.saggezza.DateValidatorWeekdays;
 import com.emanuelg.saggezza.R;
 import com.emanuelg.saggezza.TimesheetApi;
-import com.emanuelg.saggezza.model.Employee;
 import com.emanuelg.saggezza.model.Project;
 import com.emanuelg.saggezza.model.Task;
 import com.emanuelg.saggezza.model.Timesheet;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -119,7 +115,7 @@ public class UpdateTimesheet extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            View view = inflater.inflate(R.layout.fragment_add_timesheet, container, false);
+            View view = inflater.inflate(R.layout.fragment_update_timesheet, container, false);
 
             toolbar = view.findViewById(R.id.toolbar);
 
@@ -238,7 +234,7 @@ public class UpdateTimesheet extends DialogFragment {
 
         toolbar.setTitle("Submit your timesheet");
 
-        toolbar.inflateMenu(R.menu.dialog_menu);
+        toolbar.setCollapseIcon(R.drawable.ic_close_24);
 
         toolbar.setOnMenuItemClickListener(item -> {
 
@@ -298,7 +294,6 @@ public class UpdateTimesheet extends DialogFragment {
         }
     }
 
-
     private boolean isValid() {
         if(TextUtils.isEmpty(autocompleteProject.getText()))
         {
@@ -330,6 +325,7 @@ public class UpdateTimesheet extends DialogFragment {
                 .with(LocalTime.MIN)
                 .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
+
     public static long toMills(final LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.of("GMT")).toInstant().toEpochMilli();
     }
@@ -344,9 +340,6 @@ public class UpdateTimesheet extends DialogFragment {
                 .with(LocalTime.MAX)
                 .with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
     }
-
-
-
 
     /**
      * Remove dialog. Show Toolbar

@@ -89,9 +89,6 @@ public class TimesheetApi extends Application {
                                 timesheetList.add(item);
                         }
 
-                        //setTimesheetList(timesheetList);
-                        //instance.setTimesheetList(timesheetList);
-
                     } else {
                         System.out.println("query was empty");
                     }

@@ -56,12 +56,14 @@ public class AddTimesheetActivity extends AppCompatActivity {
     private EditText inputDatePicker;
     private EditText inputHours;
     private LinearProgressIndicator progressIndicator;
+    private Toolbar toolbar;
     private final TimesheetApi api = TimesheetApi.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_timesheet);
+        setTheme(R.style.Theme_SaggezzaTimesheets_NoActionBar);
         progressIndicator = findViewById(R.id.linearProgressIndicator_AddTimesheet);
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         final MaterialDatePicker<Pair<Long, Long>> materialDatePicker;
@@ -93,13 +95,18 @@ public class AddTimesheetActivity extends AppCompatActivity {
             }
         });
 
-        ActionBar toolbar= getSupportActionBar();
-        assert toolbar != null;
-        toolbar.setTitle("Submit your timesheet");
-        toolbar.setDisplayHomeAsUpEnabled(true);
-        toolbar.setHomeButtonEnabled(true);
-        toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24);
+        //getSupportActionBar().hide();
+        //extToolbar.hide();
 
+        toolbar = findViewById(R.id.toolbar);
+
+        assert toolbar != null;
+
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle("Submit your timesheet");
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close_24);
 
         //Calendar Constraints to limit the range to weekdays only
         CalendarConstraints.Builder constraintBuilder = new CalendarConstraints.Builder();
