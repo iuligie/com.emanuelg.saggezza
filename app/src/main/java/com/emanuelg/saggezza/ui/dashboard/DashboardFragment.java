@@ -30,11 +30,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
-    private List<Employee> employeeList =new ArrayList<>();
+    private final List<Employee> employeeList =new ArrayList<>();
     private RecyclerView recyclerView;
     private LeaderboardRecyclerAdapter leaderboardRecyclerAdapter;
     //ProgressBar progressBar;
@@ -143,6 +144,7 @@ public class DashboardFragment extends Fragment {
     private void LoadAchievements(List<ImageView> imgs) {
 
         List<Uri> res=getAchievements(imgs.size()+1);
+        Collections.reverse(imgs);
         for (int i=0;i<imgs.size();i++) {
             Picasso.get()
                     .load(res.get(i).toString())

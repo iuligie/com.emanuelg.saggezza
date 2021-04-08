@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">My Timesheets</string>
-    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_authentication">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="saggezza_brand_image">Saggezza Logo</string>
     <string name="get_started">Get Started!</string>
     <string name="entry_on">Entry On</string>
@@ -20,10 +15,7 @@
     <string name="my_timesheets">My Timesheets</string>
     <string name="label_projectDropdown">Select Project</string>
     <string name="label_taskDropdown">Select Task</string>
-    <string name="mock_date">01/01/2021</string>
-    <string name="hours">40</string>
     <string name="txtSubmitButton">Submit</string>
-    <string name="dash_dateRange">-</string>
     <string name="hint_dateRange">Select Date Range</string>
     <string name="hint_Hours">Enter Hours</string>
     <string name="_index">1.</string>

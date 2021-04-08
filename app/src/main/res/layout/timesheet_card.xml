@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardEntry"
     android:layout_width="match_parent"
     android:layout_height="115dp"
     android:layout_margin="8dp"
@@ -78,7 +77,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_details"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
@@ -102,7 +100,6 @@
                 android:minHeight="40dp">
 
                 <ImageView
-                    android:id="@+id/imgHours"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
