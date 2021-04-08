@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardEntry"
     android:layout_width="match_parent"
     android:layout_height="115dp"
     android:layout_margin="8dp"
-    android:elevation="1dp"
+    android:elevation="24dp"
     app:cardBackgroundColor="?attr/surface"
     app:cardCornerRadius="14dp"
     app:contentPadding="4dp"

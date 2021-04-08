@@ -1,50 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/surface">
+    android:background="?attr/surface"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtIndex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="10dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="@string/_index"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp" />
+        android:layout_marginBottom="10dp"
+        android:background="?attr/surface">
 
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="15dp"
-        android:layout_toStartOf="@+id/txtScore"
-        android:layout_toEndOf="@+id/txtIndex"
-        android:fontFamily="@font/roboto_medium"
-        android:text="@string/test_LongEmail"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/txtIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/_index"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/txtScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/_testScore"
-        android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="2"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/roboto_medium"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:text="@string/test_LongEmail"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="@string/_testScore"
+            android:textAlignment="textEnd"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+</LinearLayout>
