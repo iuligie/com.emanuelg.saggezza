@@ -57,6 +57,27 @@ public class MyTimesheetsFragment extends Fragment {
         progressIndicator = root.findViewById(R.id.linearProgressIndicator_Timesheets);
         timesheetRecyclerAdapter = new TimesheetRecyclerAdapter(getContext(), TimesheetApi.getInstance().getTimesheetList());
         recyclerView.setAdapter(timesheetRecyclerAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1) && TimesheetApi.getInstance().getTimesheetList().size() != 0) {
+                    swipeRefresh.setRefreshing(true);
+                    TimesheetApi.getInstance().loadNextPage();
+                    new Handler().postDelayed(() -> {
+
+                        // Stop animation (This will be after 3 seconds)
+                        swipeRefresh.setRefreshing(false);
+                        timesheetRecyclerAdapter.notifyDataSetChanged();
+                    }, 3000);
+
+                    timesheetRecyclerAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
         timesheetRecyclerAdapter.notifyDataSetChanged();
         if(timesheetRecyclerAdapter.getItemCount() == 0)
             noTimesheetEntry.setVisibility(View.VISIBLE);
@@ -82,7 +103,6 @@ public class MyTimesheetsFragment extends Fragment {
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.add(android.R.id.content, updateTimesheet).addToBackStack(null).commit();
                     Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-                    //TODO Implement Update Timesheet on Swipe Left
                     //Toast.makeText(getActivity(), "Swipe Left - Update Timesheet", Toast.LENGTH_LONG).show();
                     timesheetRecyclerAdapter.notifyDataSetChanged();
                 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.emanuelg.saggezza.model.Employee;
 import com.emanuelg.saggezza.model.Project;
@@ -13,11 +14,13 @@ import com.emanuelg.saggezza.model.Timesheet;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.rollbar.android.Rollbar;
@@ -39,6 +42,7 @@ public class TimesheetApi extends Application {
     private List<Task> myTasksList;
     private List<Employee> employeeList;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    DocumentSnapshot lastVisible;
     //endregion
 
     public TimesheetApi() {
@@ -79,9 +83,13 @@ public class TimesheetApi extends Application {
         CollectionReference collectionReference = db.collection("Timesheets");
         collectionReference.orderBy("submittedOn", Query.Direction.DESCENDING)
                 .whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
+                .limit(10)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        lastVisible = queryDocumentSnapshots.getDocuments()
+                                .get(queryDocumentSnapshots.size() -1);
                         for (QueryDocumentSnapshot items : queryDocumentSnapshots) {
                             Timesheet item = items.toObject(Timesheet.class);
                             item.setId(items.getId());
@@ -144,23 +152,34 @@ public class TimesheetApi extends Application {
                 })
                 .addOnFailureListener(e -> Log.d("DB-LOG", "onFailure: " + e.getMessage()));
     }
-    public void MyTimesheetListener()
+    public void loadNextPage()
     {
-        ListenerRegistration registration;
-        Query query =db.collection("Timesheets")
-                .whereEqualTo("uid", Employee.getInstance().getAccount().getUid());
-        registration = query.addSnapshotListener((value, error) -> {
-            if(error!=null)throw new AssertionError("Error: "+error.getMessage());
-            for(QueryDocumentSnapshot doc: Objects.requireNonNull(value))
-            {
-                Timesheet item = doc.toObject(Timesheet.class);
-                if(!timesheetList.contains(item))
-                    timesheetList.add(item);
-                //timesheetRecyclerAdapter.notifyDataSetChanged();
-                //Toast.makeText(getContext(), "Items: " + TimesheetApi.getInstance().getTimesheetList().size(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        registration.remove();
+        //Construct query for next 10 timesheet
+        Query next = db.collection("Timesheets")
+                .orderBy("submittedOn", Query.Direction.DESCENDING)
+                .whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
+                .startAfter(lastVisible)
+                .limit(10);
+
+        next.get()
+                .addOnSuccessListener(documentSnapshots -> {
+
+                    if (!documentSnapshots.isEmpty()) {
+                        // Get the last visible document
+                        lastVisible = documentSnapshots.getDocuments()
+                                .get(documentSnapshots.size() -1);
+                        for (QueryDocumentSnapshot items : documentSnapshots) {
+                            Timesheet item = items.toObject(Timesheet.class);
+                            item.setId(items.getId());
+                            if(!timesheetList.contains(item))
+                                addEndOfList(timesheetList,item);
+                        }
+                    } else {
+
+                        System.out.println("query was empty");
+                    }
+                });
+
     }
     //endregion
 
@@ -339,6 +358,23 @@ public class TimesheetApi extends Application {
         myTasksList.clear();
         employeeList.clear();
         instance=null;
+    }
+    //endregion
+
+    //region Util Methods
+    private static void addEndOfList(List<Timesheet> list, Timesheet item){
+        try{
+            list.add(getEndOfList(list), item);
+        } catch (IndexOutOfBoundsException e){
+            System.out.println(e.toString());
+        }
+    }
+
+    private static int getEndOfList(List<Timesheet> list){
+        if(list != null) {
+            return list.size();
+        }
+        return -1;
     }
     //endregion
 }
