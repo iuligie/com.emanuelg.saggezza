@@ -22,12 +22,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.emanuelg.saggezza.R;
 import com.emanuelg.saggezza.TimesheetApi;
 import com.emanuelg.saggezza.TimesheetRecyclerAdapter;
+import com.emanuelg.saggezza.model.Timesheet;
 import com.emanuelg.saggezza.ui.dialog.UpdateTimesheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MyTimesheetsFragment extends Fragment {
@@ -36,6 +39,8 @@ public class MyTimesheetsFragment extends Fragment {
     LinearProgressIndicator progressIndicator;
     TextView noTimesheetEntry;
     SwipeRefreshLayout swipeRefresh;
+    int page=1;
+    List<Timesheet> currentTimesheetList =new ArrayList<>();
     //endregion
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,44 +49,61 @@ public class MyTimesheetsFragment extends Fragment {
 
         swipeRefresh = root.findViewById(R.id.swipeLayout);
         swipeRefresh.setOnRefreshListener(() -> {
+            if(TimesheetApi.getInstance().getTimesheetList().size() > 10) {
+                currentTimesheetList = TimesheetApi.getInstance().loadFirstPageFromLocal();
+            }
             timesheetRecyclerAdapter.notifyDataSetChanged();
             new Handler().postDelayed(() -> {
                 // Stop animation (This will be after 3 seconds)
                 swipeRefresh.setRefreshing(false);
+
             }, 3000);
         });
         noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
         RecyclerView recyclerView = root.findViewById(R.id.entryRecycler);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(llm);
         progressIndicator = root.findViewById(R.id.linearProgressIndicator_Timesheets);
-        timesheetRecyclerAdapter = new TimesheetRecyclerAdapter(getContext(), TimesheetApi.getInstance().getTimesheetList());
+        currentTimesheetList.addAll(TimesheetApi.getInstance().loadFirstPageFromLocal());
+        timesheetRecyclerAdapter = new TimesheetRecyclerAdapter(getContext(), currentTimesheetList);
         recyclerView.setAdapter(timesheetRecyclerAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
             @Override
             public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(1) && TimesheetApi.getInstance().getTimesheetList().size() != 0) {
-                    swipeRefresh.setRefreshing(true);
-                    TimesheetApi.getInstance().loadNextPage();
-                    new Handler().postDelayed(() -> {
+                if (!recyclerView.canScrollVertically(1))//] && TimesheetApi.getInstance().getTimesheetList().size() != 0 && TimesheetApi.getInstance().getTimesheetList().size()-1 == llm.findLastVisibleItemPosition())
+                    {
+                        recyclerView.smoothScrollToPosition(0);
+                        llm.scrollToPositionWithOffset(0, 0);
+                        swipeRefresh.setRefreshing(true);
+                        if(     (llm.findLastVisibleItemPosition() < TimesheetApi.getInstance().getTimesheetList().size()-1)
+                                && (currentTimesheetList.size() < TimesheetApi.getInstance().getTimesheetList().size()))
+                        {
+                            currentTimesheetList.addAll(TimesheetApi.getInstance().loadNextPageFromLocal());
+                            timesheetRecyclerAdapter.notifyDataSetChanged();
+                        }
 
+                        new Handler().postDelayed(() -> {
                         // Stop animation (This will be after 3 seconds)
                         swipeRefresh.setRefreshing(false);
                         timesheetRecyclerAdapter.notifyDataSetChanged();
                     }, 3000);
 
-                    timesheetRecyclerAdapter.notifyDataSetChanged();
+                        timesheetRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         });
 
 
         timesheetRecyclerAdapter.notifyDataSetChanged();
+
         if(timesheetRecyclerAdapter.getItemCount() == 0)
             noTimesheetEntry.setVisibility(View.VISIBLE);
         else noTimesheetEntry.setVisibility(View.GONE);
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

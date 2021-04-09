@@ -3,14 +3,18 @@ package com.emanuelg.saggezza;
 import android.app.Application;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.emanuelg.saggezza.model.Employee;
 import com.emanuelg.saggezza.model.Project;
 import com.emanuelg.saggezza.model.Task;
 import com.emanuelg.saggezza.model.Timesheet;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.rollbar.android.Rollbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +48,7 @@ public class TimesheetApi extends Application {
     private List<Employee> employeeList;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentSnapshot lastVisible;
+    DocumentSnapshot lastVisible_firstPage;
     //endregion
 
     public TimesheetApi() {
@@ -83,13 +89,14 @@ public class TimesheetApi extends Application {
         CollectionReference collectionReference = db.collection("Timesheets");
         collectionReference.orderBy("submittedOn", Query.Direction.DESCENDING)
                 .whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
-                .limit(10)
+                .limit(20)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     if (!queryDocumentSnapshots.isEmpty()) {
                         lastVisible = queryDocumentSnapshots.getDocuments()
                                 .get(queryDocumentSnapshots.size() -1);
+                        lastVisible_firstPage = lastVisible;
                         for (QueryDocumentSnapshot items : queryDocumentSnapshots) {
                             Timesheet item = items.toObject(Timesheet.class);
                             item.setId(items.getId());
@@ -152,16 +159,16 @@ public class TimesheetApi extends Application {
                 })
                 .addOnFailureListener(e -> Log.d("DB-LOG", "onFailure: " + e.getMessage()));
     }
-    public void loadNextPage()
+    public void loadNextPageFromDB()
     {
-        //Construct query for next 10 timesheet
+        //Construct query for next 20 timesheet
         Query next = db.collection("Timesheets")
                 .orderBy("submittedOn", Query.Direction.DESCENDING)
                 .whereEqualTo("uid", Employee.getInstance().getAccount().getUid())
                 .startAfter(lastVisible)
-                .limit(10);
+                .limit(20);
 
-        next.get()
+       com.google.android.gms.tasks.Task<QuerySnapshot> task = next.get()
                 .addOnSuccessListener(documentSnapshots -> {
 
                     if (!documentSnapshots.isEmpty()) {
@@ -173,12 +180,46 @@ public class TimesheetApi extends Application {
                             item.setId(items.getId());
                             if(!timesheetList.contains(item))
                                 addEndOfList(timesheetList,item);
+                            System.out.println("query was a success");
                         }
                     } else {
 
                         System.out.println("query was empty");
                     }
-                });
+                })
+               .addOnCompleteListener(task1 -> {
+                   if(task1.isSuccessful())
+                   {
+                       System.out.println("query was a success");
+                   }else{
+                       System.out.println("Something went wrong");
+                   }
+               });
+
+        while(!task.isComplete())
+        {
+            System.out.println("Loading");
+        }
+
+    }
+    int pageNo=1;
+    public List<Timesheet> loadNextPageFromLocal()
+    { int start,end;
+        start  = (pageNo * 10) - 10;
+        end = start + 9;
+        if(pageNo*10 < timesheetList.size() && end< timesheetList.size()) {
+            pageNo++;
+            return timesheetList.subList(start, end);
+        }else{
+            loadNextPageFromDB();
+        return new ArrayList<>();
+        }
+
+
+    }
+    public List<Timesheet> loadFirstPageFromLocal()
+    {
+        return timesheetList.subList(0, 9);
 
     }
     //endregion
@@ -375,6 +416,10 @@ public class TimesheetApi extends Application {
             return list.size();
         }
         return -1;
+    }
+
+    public void resetTimesheetList() {
+      lastVisible =  lastVisible_firstPage;
     }
     //endregion
 }
