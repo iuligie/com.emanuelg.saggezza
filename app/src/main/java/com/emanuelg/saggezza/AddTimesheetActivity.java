@@ -12,7 +12,6 @@ import android.view.View;
 
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -64,6 +63,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_timesheet);
         setTheme(R.style.Theme_SaggezzaTimesheets_NoActionBar);
+
         progressIndicator = findViewById(R.id.linearProgressIndicator_AddTimesheet);
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         final MaterialDatePicker<Pair<Long, Long>> materialDatePicker;
@@ -95,15 +95,13 @@ public class AddTimesheetActivity extends AppCompatActivity {
             }
         });
 
-        //getSupportActionBar().hide();
-        //extToolbar.hide();
-
         toolbar = findViewById(R.id.toolbar);
 
         assert toolbar != null;
 
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null;
         actionbar.setTitle("Submit your timesheet");
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_close_24);
@@ -204,7 +202,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
 
    }
 
-    private void Save() {
+    private void save() {
             progressIndicator.setVisibility(View.VISIBLE);
             if(isValid())
             {
@@ -226,7 +224,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
                 current.setTask(selectedTask);
                 current.setOnTime(LocalDateTime.now().isBefore(toLocalDateTime(endDate).with(LocalTime.MAX)));
 
-                Submit(current);
+                submit(current);
             }else{
                 Toast.makeText(this, "Make sure all fields are filled!", Toast.LENGTH_LONG).show();
                 progressIndicator.setVisibility(View.GONE);
@@ -244,7 +242,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
             //Toast.makeText(this, "Submission was successful", Toast.LENGTH_LONG).show();
-        Save();
+        save();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -301,7 +299,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
                 .with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
     }
 
-    private void Submit(Timesheet current) {
+    private void submit(Timesheet current) {
         CollectionReference ref = FirebaseFirestore.getInstance().collection("Timesheets");
         if (    !TextUtils.isEmpty(current.getHours()) && !TextUtils.isEmpty(current.getUid())
              && !TextUtils.isEmpty(current.getTxtDateRange()) && !TextUtils.isEmpty(current.getDateRange())

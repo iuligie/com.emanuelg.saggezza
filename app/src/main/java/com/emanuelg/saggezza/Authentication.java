@@ -125,14 +125,7 @@ public class Authentication extends AppCompatActivity {
     private void updateUI(FirebaseUser account, boolean isNew) {
         if(account != null)
         {
-
             updateDatabase(account, isNew);
-            /*if(Employee.getInstance().getMyReference()!=null) {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-            }*/
-           // else{ Toast.makeText(this, "Something went wrong! Please try again!", Toast.LENGTH_LONG).show();}
-           // authLoadingBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -158,7 +151,6 @@ public class Authentication extends AppCompatActivity {
                 temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
                 temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                 temp.setMyReference(Objects.requireNonNull(document.getReference()));
-                temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
                 temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
                 temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
                 api = TimesheetApi.getInstance();
@@ -168,39 +160,7 @@ public class Authentication extends AppCompatActivity {
                 finish();
             }
         }else throw new RuntimeException("Something went wrong");
-        /*db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        assert document != null;
-                        if (isNew) {
-                            addEmployee(user);
-                        }
-                        else {
-                            Employee temp = Employee.getInstance();
-                            temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
-                            temp.setSupervisor(Objects.requireNonNull(document.toObject(Employee.class)).isSupervisor());
-                            temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
-                            temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
-                            temp.setMyReference(Objects.requireNonNull(document.getReference()));
-                            temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
-                            temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
-                            temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
-                            api = TimesheetApi.getInstance();
-                        }
-                        if(Employee.getInstance().getMyReference()!=null) {
-                            startActivity(new Intent(this, MainActivity.class));
-                            finish();
-                        }
-                    } else {
-                        Log.d(TAG, "Failed with: ", task.getException());
-                        Rollbar.instance().error("Can not load employees");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    throw new RuntimeException("Employee can not be loaded from server");
-                });*/
+
     }
 
     private void addEmployee(FirebaseUser user) {

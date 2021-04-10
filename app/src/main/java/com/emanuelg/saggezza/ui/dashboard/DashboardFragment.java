@@ -63,7 +63,7 @@ public class DashboardFragment extends Fragment {
         TextView txtLevel = view.findViewById(R.id.txtLevel);
         ImageView imgRank = view.findViewById(R.id.imgRank);
 
-        Pair<String, Integer> rankAndAvatar = TimesheetApi.getInstance().getRankAndAvatar(Employee.getInstance().getScore());
+        Pair<String, Integer> rankAndAvatar = getRankAndAvatar(Employee.getInstance().getScore());
         txtLevel.setText(rankAndAvatar.first);
         Picasso.get()
                 .load(rankAndAvatar.second)
@@ -83,7 +83,7 @@ public class DashboardFragment extends Fragment {
         txtEmployeeName.setText(Employee.getInstance().getAccount().getDisplayName());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        InitializeData();
+        initializeData();
         progressBar_Leaderboard.setVisibility(View.GONE);
         progressBar_Avatar.setVisibility(View.GONE);
         ImageView imgAchievement1 = view.findViewById(R.id.imgAchiement1);
@@ -131,7 +131,7 @@ public class DashboardFragment extends Fragment {
             imgAchievement4.setVisibility(View.GONE);
             imgAchievement5.setVisibility(View.GONE);
         }
-        LoadAchievements(imgs);
+        loadAchievements(imgs);
         //endregion
     }
 
@@ -141,7 +141,7 @@ public class DashboardFragment extends Fragment {
         progressIndicator.setVisibility(View.GONE);
     }
 
-    private void LoadAchievements(List<ImageView> imgs) {
+    private void loadAchievements(List<ImageView> imgs) {
 
         List<Uri> res=getAchievements(imgs.size()+1);
         Collections.reverse(imgs);
@@ -165,7 +165,7 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    private void InitializeData() {
+    private void initializeData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Employees")
                 .orderBy("score", Query.Direction.DESCENDING)
@@ -176,15 +176,15 @@ public class DashboardFragment extends Fragment {
                             employeeList.add(temp);
                         }
                         TimesheetApi.getInstance().setEmployeeList(employeeList);
-                        InitializeAdapter();
+                        initializeAdapter();
                     }
                 });
 
-        InitializeAdapter();
+        initializeAdapter();
 
     }
 
-    private void InitializeAdapter() {
+    private void initializeAdapter() {
         leaderboardRecyclerAdapter = new LeaderboardRecyclerAdapter(getContext(), employeeList);
         recyclerView.setAdapter(leaderboardRecyclerAdapter);
         leaderboardRecyclerAdapter.notifyDataSetChanged();
@@ -192,18 +192,12 @@ public class DashboardFragment extends Fragment {
 
     public List<Uri> getAchievements(int total) {
         List<Uri> result = new ArrayList<>();
-        // Create a Cloud Storage reference from the app
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
-        for (int i = 1; i <= total; i++) {
-            String strImg = "achievement" + i + ".png";
-            storageRef.child("achievement1.png")
-                    .getDownloadUrl()
-                    .addOnSuccessListener(result::add);
-
+        if(TimesheetApi.getInstance().getAchievements(total).size() != 0)
+        {
+            result = TimesheetApi.getInstance().getAchievements(total);
         }
-        if (result.size() == 0) {
+
+        else if (result.size() == 0) {
             result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement1.png?alt=media&token=ad9b5aba-00de-4177-9bba-8c0b459b9973"));
             if (total >= 2)
                 result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement2.png?alt=media&token=ce2a5a65-f459-4bdf-ba9e-4f36daac42d2"));
@@ -217,5 +211,29 @@ public class DashboardFragment extends Fragment {
         }
         return result;
     }
+    public Pair<String, Integer> getRankAndAvatar(int score)
+    {
+        Pair<String, Integer> result;
 
+        if(score >= 100 && score <200)
+        {
+            result = new Pair<>("Level 2 - Visionary ", R.drawable.rank2);
+        }else if(score >= 200&& score <300)
+        {
+            result = new Pair<>("Level 3 - Aspiring Explorer ", R.drawable.rank3);
+        }
+        else if(score >= 300&& score <400)
+        {
+            result = new Pair<>("Level 4 - Established Explorer ", R.drawable.rank4);
+        }
+        else if(score >= 500)
+        {
+            result = new Pair<>("Guru", R.drawable.rank5);
+        }else {
+            result = new Pair<>("Level 1 - Engager ", R.drawable.rank1);
+        }
+
+
+        return result;
+    }
 }

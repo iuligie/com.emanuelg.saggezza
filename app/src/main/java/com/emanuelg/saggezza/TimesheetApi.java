@@ -1,16 +1,13 @@
 package com.emanuelg.saggezza;
 
 import android.app.Application;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
-import android.util.Pair;
 
 import com.emanuelg.saggezza.model.Employee;
 import com.emanuelg.saggezza.model.Project;
 import com.emanuelg.saggezza.model.Task;
 import com.emanuelg.saggezza.model.Timesheet;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
@@ -23,16 +20,13 @@ import com.google.firebase.storage.StorageReference;
 import com.rollbar.android.Rollbar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class TimesheetApi extends Application {
 
     //region Variables
-    private static TimesheetApi instance;// = new TimesheetApi();
-    //private Employee employee;// = Employee.getInstance();
+    private static TimesheetApi instance;
     private String currentTimesheetPos;
     private List<Timesheet> timesheetList;
     private List<Project> myProjectsList;
@@ -42,17 +36,12 @@ public class TimesheetApi extends Application {
     //endregion
 
     public TimesheetApi() {
-        //Employee = Employee.getInstance();
         timesheetList = new ArrayList<>();
         myProjectsList = new ArrayList<>();
         myTasksList = new ArrayList<>();
-        //Employee.getInstance().getAccount().getUid();
-        //if(Employee.getInstance().getMyReference()!=null) {
             loadMyTasks();
             loadMyProjects();
             loadMyTimesheets();
-        //}//else throw new RuntimeException("Employee document reference unavailable");
-
     }
 
     public static synchronized TimesheetApi getInstance() {
@@ -110,8 +99,6 @@ public class TimesheetApi extends Application {
                                 myProjectsList.add(item);
                             }
                         }
-
-                        //setMyProjectsList(myProjectsList);
                         instance.setMyProjectsList(myProjectsList);
 
                     } else {
@@ -134,8 +121,6 @@ public class TimesheetApi extends Application {
                                 myTasksList.add(item);
                             }
                         }
-
-                        //setMyTasksList(myTasksList);
                         instance.setMyTasksList(myTasksList);
 
                     } else {
@@ -143,24 +128,6 @@ public class TimesheetApi extends Application {
                     }
                 })
                 .addOnFailureListener(e -> Log.d("DB-LOG", "onFailure: " + e.getMessage()));
-    }
-    public void MyTimesheetListener()
-    {
-        ListenerRegistration registration;
-        Query query =db.collection("Timesheets")
-                .whereEqualTo("uid", Employee.getInstance().getAccount().getUid());
-        registration = query.addSnapshotListener((value, error) -> {
-            if(error!=null)throw new AssertionError("Error: "+error.getMessage());
-            for(QueryDocumentSnapshot doc: Objects.requireNonNull(value))
-            {
-                Timesheet item = doc.toObject(Timesheet.class);
-                if(!timesheetList.contains(item))
-                    timesheetList.add(item);
-                //timesheetRecyclerAdapter.notifyDataSetChanged();
-                //Toast.makeText(getContext(), "Items: " + TimesheetApi.getInstance().getTimesheetList().size(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        registration.remove();
     }
     //endregion
 
@@ -171,17 +138,6 @@ public class TimesheetApi extends Application {
             if(item.getId().equals(id)) return item;
         }
         return null;
-        /*
-        DocumentReference doc=FirebaseFirestore.getInstance().collection("Projects").document(id);
-       List<Project> resultList = new ArrayList<>();
-        doc.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    Project project = documentSnapshot.toObject(Project.class);
-                    resultList.add(project);
-                });
-        return resultList.size() == 0 ? fetchProjectFromLocal(id) :  resultList.get(0);//resultList.get(0);
-        */
-        //return fetchProjectFromLocal(id);
     }
     public Task getTaskById(String id) {
         if (BuildConfig.DEBUG && !(myTasksList.size() > 0 && id != null)) {
@@ -191,19 +147,6 @@ public class TimesheetApi extends Application {
             if (item.getId().equals(id)) return item;
         }
         return null;
-        //return fetchTaskFromLocal(id);
-        /*
-        CollectionReference collectionReference = db.collection("Tasks");
-
-        List<Task> resultList = new ArrayList<>();
-        collectionReference.document(id)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    Task task = documentSnapshot.toObject(Task.class);
-                    resultList.add(task);
-                });
-        return  resultList.size() == 0 ? fetchTaskFromLocal(id) :  resultList.get(0);
-        */
     }
     public List<Task> getTasksByProjectId(String projectId)
     {
@@ -219,6 +162,7 @@ public class TimesheetApi extends Application {
     //endregion
 
     //region Current Adapter Position
+    //TO DO deal with this somehow
     public String getCurrentTimesheetPos() {
         return currentTimesheetPos;
     }
@@ -245,13 +189,7 @@ public class TimesheetApi extends Application {
 
     //region Get Lists
     public List<Timesheet> getTimesheetList() {
-        // if (BuildConfig.DEBUG && timesheetList.size() == 0) {
-        //     throw new AssertionError("Assertion failed");
-        // }
-        //if (BuildConfig.DEBUG && timesheetList.size() > 3) {
-        //    Rollbar.instance().error(new Exception("Timesheet List has DUPLICATES"));
-        //throw new AssertionError("Assertion failed");
-        // }
+
         return timesheetList;
     }
 
@@ -272,34 +210,6 @@ public class TimesheetApi extends Application {
     }
     //endregion
 
-    //region Rank and Avatar
-    public Pair<String, Integer> getRankAndAvatar(int score)
-    {
-        Pair<String, Integer> result;
-
-        if(score >= 100)
-        {
-            result = new Pair<>("Level 2 - Visionary ", R.drawable.rank2);
-        }else if(score >= 200)
-        {
-            result = new Pair<>("Level 3 - Aspiring Explorer ", R.drawable.rank3);
-        }
-        else if(score >= 300)
-        {
-            result = new Pair<>("Level 4 - Established Explorer ", R.drawable.rank4);
-        }
-        else if(score >= 500)
-        {
-            result = new Pair<>("Guru", R.drawable.rank5);
-        }else {
-            result = new Pair<>("Level 1 - Engager ", R.drawable.rank1);
-        }
-        
-        
-        return result;
-    }
-    //endregion
-
     //region Achievements
     public List<Uri> getAchievements(int total) {
         List<Uri> result = new ArrayList<>();
@@ -308,11 +218,19 @@ public class TimesheetApi extends Application {
         //StorageReference storageRef = storage.getReference();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
         for (int i = 1; i <= total; i++) {
-            String strImg = "achievement" + i + ".png";
-            storageRef.child("achievement1.png")
+            {
+                String strImg = "achievement" + i + ".png";
+                com.google.android.gms.tasks.Task<Uri> task = storageRef.child(strImg).getDownloadUrl();
+                while (!task.isComplete()) {
+                    System.out.println("API:Loading...");
+                }
+                if (task.isSuccessful()) {
+                    result.add(task.getResult());
+                }
+            /*storageRef.child("achievement1.png")
                     .getDownloadUrl()
-                    .addOnSuccessListener(result::add);
-
+                    .addOnSuccessListener(result::add);*/
+            }
         }
         if (result.size() == 0) {
             result.add(Uri.parse("gs://emanuel-dissertation.appspot.com/achievement3.png"));
@@ -331,7 +249,7 @@ public class TimesheetApi extends Application {
                 .addOnSuccessListener(aVoid -> Log.d("DELETE-LOG", "DocumentSnapshot successfully deleted!"))
                 .addOnFailureListener(e -> Log.w("DELETE-LOG", "Error deleting document", e));
     }
-
+    //endregion
     public void clearInstance() {
 
         timesheetList.clear();
@@ -340,5 +258,4 @@ public class TimesheetApi extends Application {
         employeeList.clear();
         instance=null;
     }
-    //endregion
 }

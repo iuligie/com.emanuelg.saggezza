@@ -16,8 +16,6 @@ public class Employee {
 
     //region Variables
     public boolean supervisor;
-    @Exclude
-    private FirebaseUser account;
 
     private String supervisorId;
     private String email;
@@ -29,7 +27,7 @@ public class Employee {
     //endregion
     public Employee() {
     }
-    //region Account
+    //region Account and Instance
 
     public static Employee getInstance() {
         if (instance == null)
@@ -40,11 +38,7 @@ public class Employee {
     @NotNull
     @Exclude
     public FirebaseUser getAccount() {
-       // assert FirebaseAuth.getInstance().getCurrentUser() != null;
         return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
-    }
-    public void setAccount(FirebaseUser account) {
-        this.account = account;
     }
     //endregion
     //region Supervisor
@@ -70,7 +64,7 @@ public class Employee {
     }
     //endregion
     //region My Reference
-    //@Exclude
+    @Exclude
     public DocumentReference getMyReference() {
        // assert myReference != null;
         return myReference;
@@ -115,10 +109,6 @@ public class Employee {
 
     public void setAchievementsTotal(int achievementsTotal) {
         this.achievementsTotal = achievementsTotal;
-    }
-    public void incrementAchievementsTotal()
-    {
-        achievementsTotal++;
     }
 
     //endregion

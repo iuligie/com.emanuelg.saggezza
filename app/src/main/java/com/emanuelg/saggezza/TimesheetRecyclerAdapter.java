@@ -97,9 +97,8 @@ public class TimesheetRecyclerAdapter extends RecyclerView.Adapter<TimesheetRecy
             itemView.setOnLongClickListener(v -> {
                 Toast.makeText(v.getContext(), "Long Press Detected - Edit Item", Toast.LENGTH_LONG).show();
                 TimesheetApi api=TimesheetApi.getInstance();
-                api.setCurrentTimesheetPos(Integer.toString(getAdapterPosition()));
-                //ctx.startActivity(new Intent(v.getContext(), PostProductActivity.class));
-                //TO DO implement edit function for timesheets
+                //T ODO make sure update is implemented in the best way
+                //api.setCurrentTimesheetPos(Integer.toString(getAdapterPosition()));
                 return false;
             });
 

@@ -127,7 +127,6 @@ public class SplashActivity extends Activity {
                             temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
                             temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                             temp.setMyReference(Objects.requireNonNull(document.getReference()));
-                            temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
                             temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
                             temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
                             api = TimesheetApi.getInstance();
