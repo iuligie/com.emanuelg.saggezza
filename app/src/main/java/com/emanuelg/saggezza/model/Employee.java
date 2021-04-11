@@ -19,11 +19,13 @@ public class Employee {
 
     private String supervisorId;
     private String email;
-    private DocumentReference myReference;
+
     private static Employee instance;
     private int score;
     private String name;
     private int achievementsTotal;
+    @Exclude
+    private DocumentReference myReference;
     //endregion
     public Employee() {
     }

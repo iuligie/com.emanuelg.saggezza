@@ -36,7 +36,6 @@ public class Authentication extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     GoogleSignInClient mGoogleSignInClient;
     TimesheetApi api;
-    FirebaseUser current;
     private static final int RC_SIGN_IN = 9001;
     private ProgressBar authLoadingBar;
 
@@ -135,7 +134,6 @@ public class Authentication extends AppCompatActivity {
         while(!task.isComplete())
         {
             authLoadingBar.setVisibility(View.VISIBLE);
-            System.out.println("Loading...");
         }
         if(task.isSuccessful())
         {

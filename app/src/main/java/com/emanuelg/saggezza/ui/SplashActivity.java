@@ -59,20 +59,19 @@ public class SplashActivity extends Activity {
 
             //The following code will execute after the 5 seconds.
             try {
+                Intent intent;
                 if(isAuthenticated)
                 {   //Go to Main Activity
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    //Let's Finish Splash Activity since we don't want to show this when user press back button.
-                    finish();
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+
                 }
                 else
                 {   //Go to Authentication Activity
-                    Intent intent = new Intent(getApplicationContext(), Authentication.class);
-                    startActivity(intent);
-                    //Finish Splash Activity since we don't want to show this when user press back button.
-                    finish();
+                    intent = new Intent(getApplicationContext(), Authentication.class);
                 }
+                startActivity(intent);
+                //Finish Splash Activity since we don't want to show this when user press back button.
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }

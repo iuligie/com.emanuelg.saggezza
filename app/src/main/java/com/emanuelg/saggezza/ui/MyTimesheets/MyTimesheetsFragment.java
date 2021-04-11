@@ -129,6 +129,12 @@ public class MyTimesheetsFragment extends Fragment {
             noTimesheetEntry.setVisibility(View.VISIBLE);
         else noTimesheetEntry.setVisibility(View.GONE);
         timesheetRecyclerAdapter.notifyDataSetChanged();
+        progressIndicator.setVisibility(View.VISIBLE);
+        swipeRefresh.setRefreshing(true);
+        new Handler().postDelayed(() -> {
+            // Stop animation (This will be after 3 seconds)
+            swipeRefresh.setRefreshing(false);
+        }, 1000);
         progressIndicator.setVisibility(View.GONE);
     }
 }
