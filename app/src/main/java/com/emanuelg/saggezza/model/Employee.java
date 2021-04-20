@@ -5,11 +5,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class Employee {
@@ -18,6 +16,8 @@ public class Employee {
     private static Employee instance;
     private int score;
     private String name;
+    private int badgesCount;
+    private int penaltyBadgesCount;
     private int achievementsTotal;
     @Exclude
     private DocumentReference myReference;
@@ -80,8 +80,16 @@ public class Employee {
     public void incrementScore(boolean onTime)
     {
         if (onTime)
-        myReference.update("score", FieldValue.increment(10));
-        else myReference.update("score", FieldValue.increment(-10));
+        {
+            myReference.update("score", FieldValue.increment(10));
+            myReference.update("badgesCount",FieldValue.increment(1));
+            badgesCount++;
+        }
+        else {
+            myReference.update("score", FieldValue.increment(-10));
+            myReference.update("penaltyBadgesCount",FieldValue.increment(1));
+            penaltyBadgesCount++;
+        }
     }
 
     //endregion
@@ -94,6 +102,27 @@ public class Employee {
     public void setAchievementsTotal(int achievementsTotal) {
         this.achievementsTotal = achievementsTotal;
     }
+
+    //endregion
+
+    //region Number of Badges
+
+    public int getBadgesCount() {
+        return badgesCount;
+    }
+
+    public void setBadgesCount(int badgesCount) {
+        this.badgesCount = badgesCount;
+    }
+
+    public int getPenaltyBadgesCount() {
+        return penaltyBadgesCount;
+    }
+
+    public void setPenaltyBadgesCount(int PenaltyBadgesCount) {
+        this.penaltyBadgesCount = PenaltyBadgesCount;
+    }
+
 
     //endregion
 }

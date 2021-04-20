@@ -314,7 +314,6 @@ public class AddTimesheetActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Log.d("TAG", "OnFailure" + e.getMessage()));
 
             Employee.getInstance().incrementScore(current.isOnTime());
-
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

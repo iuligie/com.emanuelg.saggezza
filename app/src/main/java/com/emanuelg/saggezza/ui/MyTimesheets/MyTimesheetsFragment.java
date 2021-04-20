@@ -92,7 +92,7 @@ public class MyTimesheetsFragment extends Fragment {
                             .setTitle("Are you sure?")
                             .setMessage("Are you sure you want to delete this entry?\nThis action can not be undone!")
                             .setPositiveButton("Yes", (dialog, which) -> {
-                                TimesheetApi.getInstance().deleteItem(timesheetRecyclerAdapter.getItemAt(viewHolder.getAdapterPosition()).getId());
+                                TimesheetApi.getInstance().deleteItem(timesheetRecyclerAdapter.getItemAt(viewHolder.getAdapterPosition()));
                                 TimesheetApi.getInstance().getTimesheetList().remove(viewHolder.getAdapterPosition());
                                 timesheetRecyclerAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                                 timesheetRecyclerAdapter.notifyDataSetChanged();

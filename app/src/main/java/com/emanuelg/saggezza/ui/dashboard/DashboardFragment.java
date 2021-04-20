@@ -1,5 +1,6 @@
 package com.emanuelg.saggezza.ui.dashboard;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,12 +46,24 @@ public class DashboardFragment extends Fragment {
     private TextView txtEmployeeName;
     private TextView txtLevel;
     private ImageView imgRank;
+    private ImageView imgBadge;
+    private ImageView imgPenaltyBadge;
+    private TextView txtBadgesCount;
+    private TextView txtPenaltyBadgesCount;
     private List<Uri> uriAchievementsList = new ArrayList<>();
     private final List<ImageView> imgAchievementsList = new ArrayList<>();
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        imgBadge = root.findViewById(R.id.imgBadgeIcon);
+        imgPenaltyBadge = root.findViewById(R.id.imgPenaltyBadgeIcon);
+
+        txtBadgesCount = root.findViewById(R.id.txtBadgesCount);
+        txtPenaltyBadgesCount = root.findViewById(R.id.txtPenaltyBadgesCount);
 
         progressIndicator =root.findViewById(R.id.linearProgressIndicator);
         progressBar_Avatar = root.findViewById(R.id.progressBar_Avatar);
@@ -65,6 +78,7 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,7 +88,8 @@ public class DashboardFragment extends Fragment {
         progressBar_Avatar.setVisibility(View.VISIBLE);
         progressIndicator.setVisibility(View.VISIBLE);
         progressBar_Leaderboard.setVisibility(View.VISIBLE);
-
+        txtBadgesCount.setText(Integer.toString(Employee.getInstance().getBadgesCount()));
+        txtPenaltyBadgesCount.setText(Integer.toString(Employee.getInstance().getPenaltyBadgesCount()));
         Pair<String, Integer> rankAndAvatar = getRankAndAvatar(Employee.getInstance().getScore());
         txtLevel.setText(rankAndAvatar.first);
 
@@ -93,6 +108,9 @@ public class DashboardFragment extends Fragment {
                     }
                 });
 
+        Picasso.get().load(R.drawable.badge).into(imgBadge);
+        Picasso.get().load(R.drawable.ic_error_24).into(imgPenaltyBadge);
+        imgPenaltyBadge.setImageResource(R.drawable.ic_error_24);
         txtEmployeeName.setText(Employee.getInstance().getAccount().getDisplayName());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -213,27 +231,6 @@ public class DashboardFragment extends Fragment {
         leaderboardRecyclerAdapter.notifyDataSetChanged();
     }
 
-    /*public List<Uri> loadAchievementFromDB(int total) {
-        List<Uri> result = new ArrayList<>();
-        if(TimesheetApi.getInstance().loadAchievementFromDB(total).size() != 0)
-        {
-            result = TimesheetApi.getInstance().loadAchievementFromDB(total);
-        }
-
-        else if (result.size() == 0) {
-            result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement1.png?alt=media&token=ad9b5aba-00de-4177-9bba-8c0b459b9973"));
-            if (total >= 2)
-                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement2.png?alt=media&token=ce2a5a65-f459-4bdf-ba9e-4f36daac42d2"));
-            if (total >= 3)
-                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement3.png?alt=media&token=6d9112a7-5e46-452b-a8ea-c223793dc057"));
-            if (total >= 4)
-                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement4.png?alt=media&token=549d484a-5d14-4b05-8473-1420356812ca"));
-            if (total >= 5)
-                result.add(Uri.parse("https://firebasestorage.googleapis.com/v0/b/emanuel-dissertation.appspot.com/o/achievement5.png?alt=media&token=1f56fd4b-32cb-46a6-be4e-842614f59240"));
-            //throw new AssertionError("Unable to load achievements");
-        }
-        return result;
-    }*/
     public Pair<String, Integer> getRankAndAvatar(int score)
     {
         Pair<String, Integer> result;
@@ -263,7 +260,6 @@ public class DashboardFragment extends Fragment {
     public void loadAchievementFromDB(int total) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        //StorageReference storageRef = storage.getReference();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
         for (int i = 1; i <= total; i++)
             {

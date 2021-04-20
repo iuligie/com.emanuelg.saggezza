@@ -79,37 +79,6 @@ public class SplashActivity extends Activity {
     }
     private void  updateDatabase(FirebaseUser user) {
 
-        //region Working - Ugly Document Retrieving method
-       /*
-        Task<DocumentSnapshot> task = db.collection("Employees").document(Objects.requireNonNull(user.getUid())).get();
-        while(!task.isComplete())
-        {
-            //authLoadingBar.setVisibility(View.VISIBLE);
-            System.out.println("Loading...");
-        }
-        if(task.isSuccessful())
-        {
-            DocumentSnapshot document = task.getResult();
-            assert document != null;
-
-                Employee temp = Employee.getInstance();
-                temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
-                temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
-                temp.setMyReference(Objects.requireNonNull(document.getReference()));
-                temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
-                temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
-                temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
-                api = TimesheetApi.getInstance();
-
-                if(Employee.getInstance().getMyReference()!=null) {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-            }
-        }else throw new RuntimeException("Something went wrong");
-
-        */
-        //endregion
-
         //region  Might Work now - Nice Document retrieving method
         db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
                 .get()
@@ -117,13 +86,14 @@ public class SplashActivity extends Activity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         assert document != null;
-
                             Employee temp = Employee.getInstance();
                             temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
                             temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                             temp.setMyReference(Objects.requireNonNull(document.getReference()));
                             temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
                             temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
+                            temp.setBadgesCount(Objects.requireNonNull(document.toObject(Employee.class)).getBadgesCount());
+                            temp.setPenaltyBadgesCount(Objects.requireNonNull(document.toObject(Employee.class)).getPenaltyBadgesCount());
                             api = TimesheetApi.getInstance();
 
                     } else {

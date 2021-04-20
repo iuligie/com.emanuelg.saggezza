@@ -296,6 +296,7 @@
                     android:elevation="8dp">
 
                     <TextView
+                        android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -309,11 +310,58 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.124" />
+
+                    <TextView
+                        android:id="@+id/txtBadgesCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:maxLines="1"
+                        android:text="@string/_10"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="?android:attr/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                    <ImageView
+                        android:id="@+id/imgBadgeIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="120dp"
+                        android:layout_marginBottom="16dp"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/badge"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                    <TextView
+                        android:id="@+id/txtX"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/x"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imgBadgeIcon"
+                        app:layout_constraintStart_toEndOf="@+id/txtBadgesCount"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardOthers"
+                android:id="@+id/cardPenaltyBadges"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
@@ -326,6 +374,54 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/txtPenaltyBadgesCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:maxLines="1"
+                        android:text="@string/_10"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="?android:attr/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtPenaltyBadgesCard" />
+
+                    <ImageView
+                        android:id="@+id/imgPenaltyBadgeIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="120dp"
+                        android:layout_marginBottom="16dp"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/badge"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/txtPenaltyBadgesCard"
+                        app:layout_constraintTop_toBottomOf="@+id/txtPenaltyBadgesCard"
+                        app:srcCompat="@drawable/ic_error_24"
+                        tools:srcCompat="@drawable/ic_error_24" />
+
+                    <TextView
+                        android:id="@+id/txtX2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/x"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imgPenaltyBadgeIcon"
+                        app:layout_constraintTop_toBottomOf="@+id/txtPenaltyBadgesCard" />
+
+                    <TextView
+                        android:id="@+id/txtPenaltyBadgesCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"

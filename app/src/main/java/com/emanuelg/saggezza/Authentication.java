@@ -149,6 +149,8 @@ public class Authentication extends AppCompatActivity {
                 temp.setMyReference(Objects.requireNonNull(document.getReference()));
                 temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
                 temp.setName(Objects.requireNonNull(document.toObject(Employee.class)).getName());
+                temp.setBadgesCount(Objects.requireNonNull(document.toObject(Employee.class)).getBadgesCount());
+                temp.setPenaltyBadgesCount(Objects.requireNonNull(document.toObject(Employee.class)).getPenaltyBadgesCount());
                 api = TimesheetApi.getInstance();
             }
             if(Employee.getInstance().getMyReference()!=null) {
@@ -165,6 +167,8 @@ public class Authentication extends AppCompatActivity {
         employee.setScore(0);
         employee.setName(user.getDisplayName());
         employee.setAchievementsTotal(1);
+        employee.setBadgesCount(0);
+        employee.setPenaltyBadgesCount(0);
         db.collection("Employees").document(Objects.requireNonNull(user.getUid())).set(employee)
                 .addOnSuccessListener(aVoid -> Log.d("DB", "DocumentSnapshot added or updated with ID: " + user.getUid()))
                 .addOnFailureListener(e -> Log.w("DB", "Error adding document", e));

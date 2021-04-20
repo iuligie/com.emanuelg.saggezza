@@ -229,10 +229,17 @@ public class TimesheetApi extends Application {
     //endregion
 
     //region Delete Timesheet
-    public void deleteItem(String itemId)
+    public void deleteItem(Timesheet item)
     {
         Employee.getInstance().getMyReference().update("score", FieldValue.increment(-10));
-        db.collection("Timesheets").document(itemId)
+        if(item.isOnTime()) {
+            Employee.getInstance().getMyReference().update("badgesCount", FieldValue.increment(-1));
+            Employee.getInstance().setBadgesCount(Employee.getInstance().getBadgesCount()-1);
+        }
+        else {
+            Employee.getInstance().getMyReference().update("penaltyBadgesCount", FieldValue.increment(-1));
+            Employee.getInstance().setPenaltyBadgesCount(Employee.getInstance().getPenaltyBadgesCount()-1);
+        }db.collection("Timesheets").document(item.getId())
                 .delete()
                 .addOnSuccessListener(aVoid -> Log.d("DELETE-LOG", "DocumentSnapshot successfully deleted!"))
                 .addOnFailureListener(e -> Log.w("DELETE-LOG", "Error deleting document", e));
