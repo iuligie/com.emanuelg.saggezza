@@ -94,8 +94,6 @@ public class SplashActivity extends Activity {
 
                 Employee temp = Employee.getInstance();
                 temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
-                temp.setSupervisor(Objects.requireNonNull(document.toObject(Employee.class)).isSupervisor());
-                temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
                 temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                 temp.setMyReference(Objects.requireNonNull(document.getReference()));
                 temp.setAccount(Objects.requireNonNull(document.toObject(Employee.class)).getAccount());
@@ -122,8 +120,6 @@ public class SplashActivity extends Activity {
 
                             Employee temp = Employee.getInstance();
                             temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
-                            temp.setSupervisor(Objects.requireNonNull(document.toObject(Employee.class)).isSupervisor());
-                            temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
                             temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                             temp.setMyReference(Objects.requireNonNull(document.getReference()));
                             temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());

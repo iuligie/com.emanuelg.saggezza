@@ -2,6 +2,7 @@ package com.emanuelg.saggezza;
 
 import android.app.Application;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 
 import com.emanuelg.saggezza.model.Employee;
@@ -12,7 +13,6 @@ import com.google.firebase.firestore.BuildConfig;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,13 +21,11 @@ import com.rollbar.android.Rollbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TimesheetApi extends Application {
 
     //region Variables
     private static TimesheetApi instance;
-    private String currentTimesheetPos;
     private List<Timesheet> timesheetList;
     private List<Project> myProjectsList;
     private List<Task> myTasksList;
@@ -161,14 +159,6 @@ public class TimesheetApi extends Application {
     }
     //endregion
 
-    //region Current Adapter Position
-    //TO DO deal with this somehow
-    public String getCurrentTimesheetPos() {
-        return currentTimesheetPos;
-    }
-    public void setCurrentTimesheetPos(String currentTimesheetPos) {
-        this.currentTimesheetPos = currentTimesheetPos;
-    }
     //endregion
 
     //region Set Lists
@@ -222,14 +212,12 @@ public class TimesheetApi extends Application {
                 String strImg = "achievement" + i + ".png";
                 com.google.android.gms.tasks.Task<Uri> task = storageRef.child(strImg).getDownloadUrl();
                 while (!task.isComplete()) {
-                    System.out.println("API:Loading...");
+                    new Handler().postDelayed(() -> {
+                    }, 1);
                 }
                 if (task.isSuccessful()) {
                     result.add(task.getResult());
                 }
-            /*storageRef.child("achievement1.png")
-                    .getDownloadUrl()
-                    .addOnSuccessListener(result::add);*/
             }
         }
         if (result.size() == 0) {

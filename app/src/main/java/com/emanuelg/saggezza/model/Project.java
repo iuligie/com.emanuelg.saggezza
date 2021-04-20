@@ -12,7 +12,6 @@ public class Project {
     private String id;
     private String name;
     private String companyName;
-    private boolean billable;
     private List<DocumentReference> resources = new ArrayList<>();
     private DocumentReference docReference;
 
@@ -76,15 +75,6 @@ public class Project {
         this.companyName = companyName;
     }
     //endregion
-
-    //region isBillable
-    public boolean isBillable() {
-        return billable;
-    }
-
-    public void setBillable(boolean billable) {
-        this.billable = billable;
-    }
 
     //endregion
 

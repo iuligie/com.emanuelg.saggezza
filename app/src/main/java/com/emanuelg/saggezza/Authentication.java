@@ -145,8 +145,6 @@ public class Authentication extends AppCompatActivity {
             else {
                 Employee temp = Employee.getInstance();
                 temp.setEmail(Objects.requireNonNull(document.toObject(Employee.class)).getEmail());
-                temp.setSupervisor(Objects.requireNonNull(document.toObject(Employee.class)).isSupervisor());
-                temp.setSupervisorId(Objects.requireNonNull(document.toObject(Employee.class)).getSupervisorId());
                 temp.setScore(Objects.requireNonNull(document.toObject(Employee.class)).getScore());
                 temp.setMyReference(Objects.requireNonNull(document.getReference()));
                 temp.setAchievementsTotal(Objects.requireNonNull(document.toObject(Employee.class)).getAchievementsTotal());
@@ -164,8 +162,6 @@ public class Authentication extends AppCompatActivity {
     private void addEmployee(FirebaseUser user) {
         Employee employee = Employee.getInstance();
         employee.setEmail(user.getEmail());
-        employee.setSupervisor(true);
-        employee.setSupervisorId("ZQHSOfw8JdhsmXPDWGnKX86Mj5n1");
         employee.setScore(0);
         employee.setName(user.getDisplayName());
         employee.setAchievementsTotal(1);

@@ -22,8 +22,6 @@ public class Timesheet implements Parcelable {
     private Long endDate;
     private String hours;
     private Timestamp submittedOn;
-    private Timestamp approvedOn;
-    private String approvedBy;
     private String uid;
     private Project project;
     private Task task;
@@ -51,8 +49,6 @@ public class Timesheet implements Parcelable {
         }
         hours = in.readString();
         submittedOn = in.readParcelable(Timestamp.class.getClassLoader());
-        approvedOn = in.readParcelable(Timestamp.class.getClassLoader());
-        approvedBy = in.readString();
         uid = in.readString();
         onTime = in.readByte() != 0;
     }
@@ -171,22 +167,7 @@ public class Timesheet implements Parcelable {
     public void setSubmittedOn(Timestamp submittedOn) {
         this.submittedOn = submittedOn;
     }
-    //endregion
-    //region Approved On
-    public Timestamp getApprovedOn() {
-        return approvedOn;
-    }
-    public void setApprovedOn(Timestamp approvedOn) {
-        this.approvedOn = approvedOn;
-    }
-    //endregion
-    //region Approved By
-    public String getApprovedBy() {
-        return approvedBy;
-    }
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
-    }
+
     //endregion
     //region User ID
     public String getUid() {
@@ -267,8 +248,6 @@ public class Timesheet implements Parcelable {
         }
         dest.writeString(hours);
         dest.writeParcelable(submittedOn, flags);
-        dest.writeParcelable(approvedOn, flags);
-        dest.writeString(approvedBy);
         dest.writeString(uid);
         dest.writeByte((byte) (onTime ? 1 : 0));
     }

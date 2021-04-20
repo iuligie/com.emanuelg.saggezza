@@ -14,12 +14,7 @@ import java.util.Objects;
 
 public class Employee {
 
-    //region Variables
-    public boolean supervisor;
-
-    private String supervisorId;
     private String email;
-
     private static Employee instance;
     private int score;
     private String name;
@@ -42,20 +37,7 @@ public class Employee {
     public FirebaseUser getAccount() {
         return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
     }
-    //endregion
-    //region Supervisor
-    public String getSupervisorId() {
-        return supervisorId;
-    }
-    public void setSupervisorId(String supervisorId) {
-        this.supervisorId = supervisorId;
-    }
-    public boolean isSupervisor() {
-        return supervisor;
-    }
-    public void setSupervisor(boolean supervisor) {
-        this.supervisor = supervisor;
-    }
+
     //endregion
     //region Email
     public String getEmail() {
