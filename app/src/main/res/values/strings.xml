@@ -6,8 +6,6 @@
     <string name="entry_on">Entry On</string>
     <string name="project_name">Project Name</string>
     <string name="mock_week_range">01/01 – 01/05</string>
-    <string name="others">Others</string>
-    <string name="badges">Badges</string>
     <string name="txtAchievements">Achievements</string>
     <string name="txtLevel">Level 1 - Engager</string>
     <string name="txtName">Emanuel Gheorghe</string>
@@ -15,7 +13,6 @@
     <string name="my_timesheets">My Timesheets</string>
     <string name="label_projectDropdown">Select Project</string>
     <string name="label_taskDropdown">Select Task</string>
-    <string name="txtSubmitButton">Submit</string>
     <string name="hint_dateRange">Select Date Range</string>
     <string name="hint_Hours">Enter Hours</string>
     <string name="_index">1.</string>
