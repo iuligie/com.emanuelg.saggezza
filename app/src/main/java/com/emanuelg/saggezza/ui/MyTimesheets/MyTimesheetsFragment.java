@@ -2,6 +2,7 @@ package com.emanuelg.saggezza.ui.MyTimesheets;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class MyTimesheetsFragment extends Fragment {
 
         swipeRefresh.setOnRefreshListener(() -> {
             timesheetRecyclerAdapter.notifyDataSetChanged();
-            new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         });
 
         noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
@@ -131,7 +132,7 @@ public class MyTimesheetsFragment extends Fragment {
         progressIndicator.setVisibility(View.VISIBLE);
         swipeRefresh.setRefreshing(true);
 
-        new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
         progressIndicator.setVisibility(View.GONE);
     }
 }

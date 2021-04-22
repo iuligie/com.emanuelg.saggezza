@@ -3,6 +3,7 @@ package com.emanuelg.saggezza;
 import android.app.Application;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.emanuelg.saggezza.model.Employee;
@@ -216,7 +217,7 @@ public class TimesheetApi extends Application {
 
                 com.google.android.gms.tasks.Task<Uri> task = storageRef.child(strImg).getDownloadUrl();
                 while (!task.isComplete()) {
-                    new Handler().postDelayed(() -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     }, 1);
                 }
 

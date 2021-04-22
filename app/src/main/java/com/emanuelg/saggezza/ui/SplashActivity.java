@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import java.util.Objects;
 
 public class SplashActivity extends Activity {
 
-    private final Handler mWaitHandler = new Handler();
+    private final Handler mWaitHandler = new Handler(Looper.getMainLooper());
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     TimesheetApi api;
     FirebaseAuth mAuth;

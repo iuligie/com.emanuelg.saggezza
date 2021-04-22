@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,7 +174,7 @@ public class DashboardFragment extends Fragment {
         progressIndicator.setVisibility(View.VISIBLE);
         progressBar_Leaderboard.setVisibility(View.VISIBLE);
         leaderboardRecyclerAdapter.notifyDataSetChanged();
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             progressIndicator.setVisibility(View.GONE);
             progressBar_Avatar.setVisibility(View.GONE);
             progressBar_Leaderboard.setVisibility(View.GONE);
