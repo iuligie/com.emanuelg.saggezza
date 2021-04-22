@@ -16,6 +16,7 @@ public class Task {
     private List<DocumentReference> resources;
     private DocumentReference docReference;
     //endregion
+
     public Task() {
     }
     //region Id
@@ -27,6 +28,7 @@ public class Task {
         this.id = id;
     }
     //endregion
+
     //region Task Reference
     @Exclude
     public DocumentReference getDocReference() {
@@ -38,6 +40,7 @@ public class Task {
     }
 
     //endregion
+
     //region Name
     public String getName() {
         if(name == null)
@@ -51,10 +54,11 @@ public class Task {
     @NotNull
     @Override
     public String toString() {
-        return this.name; // What to display in the Spinner list.
+        return this.name;
     }
 
     //endregion
+
     //region Project Id
     public String getProjectId() {
         return projectId;
@@ -63,6 +67,7 @@ public class Task {
         this.projectId = projectId;
     }
     //endregion
+
     //region Resources
     public List<DocumentReference> getResources() {
         return resources;

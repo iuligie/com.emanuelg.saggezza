@@ -32,6 +32,7 @@ import java.util.Objects;
 
 public class MyTimesheetsFragment extends Fragment {
 
+    //region Variables Declaration
     private TimesheetRecyclerAdapter timesheetRecyclerAdapter;
     LinearProgressIndicator progressIndicator;
     TextView noTimesheetEntry;
@@ -43,13 +44,12 @@ public class MyTimesheetsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_my_timesheets, container, false);
 
         swipeRefresh = root.findViewById(R.id.swipeLayout);
+
         swipeRefresh.setOnRefreshListener(() -> {
             timesheetRecyclerAdapter.notifyDataSetChanged();
-            new Handler().postDelayed(() -> {
-                // Stop animation (This will be after 3 seconds)
-                swipeRefresh.setRefreshing(false);
-            }, 3000);
+            new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         });
+
         noTimesheetEntry = root.findViewById(R.id.txtNoEntries);
         RecyclerView recyclerView = root.findViewById(R.id.entryRecycler);
         recyclerView.setHasFixedSize(true);
@@ -58,9 +58,11 @@ public class MyTimesheetsFragment extends Fragment {
         timesheetRecyclerAdapter = new TimesheetRecyclerAdapter(getContext(), TimesheetApi.getInstance().getTimesheetList());
         recyclerView.setAdapter(timesheetRecyclerAdapter);
         timesheetRecyclerAdapter.notifyDataSetChanged();
+
         if(timesheetRecyclerAdapter.getItemCount() == 0)
             noTimesheetEntry.setVisibility(View.VISIBLE);
         else noTimesheetEntry.setVisibility(View.GONE);
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -82,10 +84,9 @@ public class MyTimesheetsFragment extends Fragment {
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.add(android.R.id.content, updateTimesheet).addToBackStack(null).commit();
                     Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-                    //TODO Implement Update Timesheet on Swipe Left
-                    //Toast.makeText(getActivity(), "Swipe Left - Update Timesheet", Toast.LENGTH_LONG).show();
                     timesheetRecyclerAdapter.notifyDataSetChanged();
                 }
+
                 if(direction==ItemTouchHelper.RIGHT)
                 {
                     new MaterialAlertDialogBuilder(requireContext())
@@ -113,9 +114,6 @@ public class MyTimesheetsFragment extends Fragment {
         timesheetRecyclerAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Called when the fragment is visible to the user and actively running.
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -129,12 +127,11 @@ public class MyTimesheetsFragment extends Fragment {
             noTimesheetEntry.setVisibility(View.VISIBLE);
         else noTimesheetEntry.setVisibility(View.GONE);
         timesheetRecyclerAdapter.notifyDataSetChanged();
+
         progressIndicator.setVisibility(View.VISIBLE);
         swipeRefresh.setRefreshing(true);
-        new Handler().postDelayed(() -> {
-            // Stop animation (This will be after 3 seconds)
-            swipeRefresh.setRefreshing(false);
-        }, 1000);
+
+        new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
         progressIndicator.setVisibility(View.GONE);
     }
 }

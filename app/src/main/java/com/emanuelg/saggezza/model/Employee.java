@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public class Employee {
 
+    //region Variables Declaration
     private String email;
     private static Employee instance;
     private int score;
@@ -22,13 +23,13 @@ public class Employee {
     @Exclude
     private DocumentReference myReference;
     //endregion
+
     public Employee() {
     }
-    //region Account and Instance
 
+    //region Account and Instance
     public static Employee getInstance() {
         if (instance == null)
-
             instance = new Employee();
         return instance;
     }
@@ -39,6 +40,7 @@ public class Employee {
     }
 
     //endregion
+
     //region Email
     public String getEmail() {
         return email;
@@ -47,16 +49,17 @@ public class Employee {
         this.email = email;
     }
     //endregion
+
     //region My Reference
     @Exclude
     public DocumentReference getMyReference() {
-       // assert myReference != null;
         return myReference;
     }
     public void setMyReference(DocumentReference myReference) {
         this.myReference = myReference;
     }
     //endregion
+
     //region Name
     public String getName() {
         return name;
@@ -67,8 +70,8 @@ public class Employee {
     }
 
     //endregion
-    //region Score
 
+    //region Score
     public int getScore() {
         return score;
     }
@@ -91,8 +94,8 @@ public class Employee {
             penaltyBadgesCount++;
         }
     }
-
     //endregion
+
     //region Achievements
 
     public int getAchievementsTotal() {
@@ -122,7 +125,6 @@ public class Employee {
     public void setPenaltyBadgesCount(int PenaltyBadgesCount) {
         this.penaltyBadgesCount = PenaltyBadgesCount;
     }
-
 
     //endregion
 }

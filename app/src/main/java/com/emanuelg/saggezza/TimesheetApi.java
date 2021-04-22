@@ -106,6 +106,7 @@ public class TimesheetApi extends Application {
                 .addOnFailureListener(e -> Log.d("DB-LOG", "onFailure: " + e.getMessage()));
     }
     public void loadMyTasks() {
+
         CollectionReference collectionReference = db.collection("Tasks");
         collectionReference.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -138,9 +139,11 @@ public class TimesheetApi extends Application {
         return null;
     }
     public Task getTaskById(String id) {
+
         if (BuildConfig.DEBUG && !(myTasksList.size() > 0 && id != null)) {
             throw new AssertionError("myTasksList is EMPTY");
         }
+
         for (Task item : myTasksList) {
             if (item.getId().equals(id)) return item;
         }
@@ -157,8 +160,6 @@ public class TimesheetApi extends Application {
         }
         return result;
     }
-    //endregion
-
     //endregion
 
     //region Set Lists
@@ -202,27 +203,31 @@ public class TimesheetApi extends Application {
 
     //region Achievements
     public List<Uri> getAchievements(int total) {
+
         List<Uri> result = new ArrayList<>();
+
         // Create a Cloud Storage reference from the app
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        //StorageReference storageRef = storage.getReference();
+
         StorageReference storageRef = storage.getReferenceFromUrl("gs://emanuel-dissertation.appspot.com");
         for (int i = 1; i <= total; i++) {
-            {
+
                 String strImg = "achievement" + i + ".png";
+
                 com.google.android.gms.tasks.Task<Uri> task = storageRef.child(strImg).getDownloadUrl();
                 while (!task.isComplete()) {
                     new Handler().postDelayed(() -> {
                     }, 1);
                 }
+
                 if (task.isSuccessful()) {
                     result.add(task.getResult());
                 }
-            }
+
         }
         if (result.size() == 0) {
+
             result.add(Uri.parse("gs://emanuel-dissertation.appspot.com/achievement3.png"));
-            //throw new AssertionError("Unable to load achievements");
         }
         return result;
     }
@@ -232,6 +237,7 @@ public class TimesheetApi extends Application {
     public void deleteItem(Timesheet item)
     {
         Employee.getInstance().getMyReference().update("score", FieldValue.increment(-10));
+
         if(item.isOnTime()) {
             Employee.getInstance().getMyReference().update("badgesCount", FieldValue.increment(-1));
             Employee.getInstance().setBadgesCount(Employee.getInstance().getBadgesCount()-1);
@@ -252,5 +258,6 @@ public class TimesheetApi extends Application {
         myTasksList.clear();
         employeeList.clear();
         instance=null;
+
     }
 }

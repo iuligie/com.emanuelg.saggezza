@@ -55,7 +55,6 @@ public class AddTimesheetActivity extends AppCompatActivity {
     private EditText inputDatePicker;
     private EditText inputHours;
     private LinearProgressIndicator progressIndicator;
-    private Toolbar toolbar;
     private final TimesheetApi api = TimesheetApi.getInstance();
 
     @Override
@@ -95,7 +94,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
             }
         });
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         assert toolbar != null;
 
@@ -121,6 +120,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
         calendar.set(Calendar.MONTH, Calendar.MARCH);
         calendar.set(Calendar.MONTH, Calendar.APRIL);
         calendar.set(Calendar.MONTH, Calendar.JUNE);
+
         //region Material Date Picker
         Long startOfCurrentWeek = toMills(startOfWeek());
         Long endOfCurrentWeek = toMills(endOfWeek());
@@ -174,6 +174,7 @@ public class AddTimesheetActivity extends AppCompatActivity {
             autocompleteProject.setError("No Projects Available");
             autocompleteTask.setError("No Tasks Available");
         }
+
         autocompleteProject.setOnItemClickListener((parentView, view, position, id) -> {
             Object item = parentView.getItemAtPosition(position);
             if (item instanceof Project)
@@ -239,7 +240,6 @@ public class AddTimesheetActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            //Toast.makeText(this, "Submission was successful", Toast.LENGTH_LONG).show();
         save();
         }
         return super.onOptionsItemSelected(item);

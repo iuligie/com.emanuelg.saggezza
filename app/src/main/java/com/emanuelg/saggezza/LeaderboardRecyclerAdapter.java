@@ -1,6 +1,7 @@
 package com.emanuelg.saggezza;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
 
     private Context context;
     private final List<Employee> employeeList;
-    //private final TimesheetApi api = TimesheetApi.getInstance();
 
     public LeaderboardRecyclerAdapter(Context context, List<Employee> employeeList) {
         this.context = context;
@@ -38,6 +38,7 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LeaderboardRecyclerAdapter.ViewHolder holder, int position) {
 

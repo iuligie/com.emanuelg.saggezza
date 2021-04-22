@@ -31,10 +31,11 @@ public class Project {
     @NotNull
     @Override
     public String toString() {
-        return this.name; // What to display in the Spinner list.
+        return this.name;
     }
 
     //endregion
+
     //region Project Reference
     @Exclude
     public DocumentReference getDocReference() {
@@ -46,6 +47,7 @@ public class Project {
     }
 
     //endregion
+
     //region Id
     public String getId() {
         return id;
@@ -74,8 +76,6 @@ public class Project {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-    //endregion
-
     //endregion
 
 }

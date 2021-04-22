@@ -341,9 +341,6 @@ public class UpdateTimesheet extends DialogFragment {
                 .with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
     }
 
-    /**
-     * Remove dialog. Show Toolbar
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

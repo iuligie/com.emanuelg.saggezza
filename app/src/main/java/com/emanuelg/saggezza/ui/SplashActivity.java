@@ -25,11 +25,13 @@ import com.squareup.picasso.Picasso;
 import java.util.Objects;
 
 public class SplashActivity extends Activity {
+
     private final Handler mWaitHandler = new Handler();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     TimesheetApi api;
     FirebaseAuth mAuth;
     boolean isAuthenticated;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,6 @@ public class SplashActivity extends Activity {
         }
         mWaitHandler.postDelayed(() -> {
 
-            //The following code will execute after the 5 seconds.
             try {
                 Intent intent;
                 if(isAuthenticated)
@@ -70,7 +71,7 @@ public class SplashActivity extends Activity {
                     intent = new Intent(getApplicationContext(), Authentication.class);
                 }
                 startActivity(intent);
-                //Finish Splash Activity since we don't want to show this when user press back button.
+                //Finish Splash Activity since we do not want to show this when user press back button.
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -79,7 +80,7 @@ public class SplashActivity extends Activity {
     }
     private void  updateDatabase(FirebaseUser user) {
 
-        //region  Might Work now - Nice Document retrieving method
+        //region  Document retrieving method
         db.collection("Employees").document(Objects.requireNonNull(user.getUid()))
                 .get()
                 .addOnCompleteListener(task -> {

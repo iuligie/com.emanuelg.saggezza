@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options, menu);
         return true;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.w("TOKEN ERROR", "Fetching FCM registration token failed", task.getException());
                         return;
                     }
+
                     // Get new FCM registration token
                     String token = task.getResult();
 
@@ -68,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
-        // Passing each dropdownProject ID as a set of Ids because each
-        // dropdownProject should be considered as top level destinations.
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard)
                 .build();
+
         NavHostFragment navHostFragment =(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();

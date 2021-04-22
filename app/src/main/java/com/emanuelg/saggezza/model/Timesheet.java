@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
 
 public class Timesheet implements Parcelable {
+
     //region Variables
     @Exclude
     private String id;
@@ -37,6 +38,7 @@ public class Timesheet implements Parcelable {
         projectId = in.readString();
         txtDateRange = in.readString();
         dateRange = in.readString();
+
         if (in.readByte() == 0) {
             startDate = null;
         } else {
@@ -47,6 +49,7 @@ public class Timesheet implements Parcelable {
         } else {
             endDate = in.readLong();
         }
+
         hours = in.readString();
         submittedOn = in.readParcelable(Timestamp.class.getClassLoader());
         uid = in.readString();
@@ -74,55 +77,62 @@ public class Timesheet implements Parcelable {
         this.id = id;
     }
     //endregion
+
     //region Task
     @Exclude
     public Task getTask() {
         assert taskId != null;
         setTask(TimesheetApi.getInstance().getTaskById(taskId));
         if(task == null) {
-            //task = new Task();
             throw new RuntimeException();
-           // task.setName("DATABASE ERROR");
-
         }
         return task;
     }
+
     public String getTaskId() {
         return taskId;
     }
+
     public DocumentReference getTaskRef() {
         return taskRef;
     }
+
     public void setTaskRef(DocumentReference taskRef) {
         this.taskRef = taskRef;
     }
+
     public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
+
     public void setTask(Task task) {
         this.task = task;
         setTaskRef(task.getDocReference());
     }
     //endregion
+
     //region Project
     public String getProjectId() {
         return projectId;
     }
+
     public DocumentReference getProjectRef() {
         return projectRef;
     }
 
     public void setProjectRef(DocumentReference projectRef) {
-        //setProject(TimesheetApi.getInstance().getProjectByRef(projectRef));
         this.projectRef = projectRef;
     }
+
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
+
     public void setProject(Project project) {
         this.project = project;
         setProjectRef(project.getDocReference());
     }
+
     @Exclude
     public Project getProject() {
         assert projectId != null;
@@ -130,53 +140,62 @@ public class Timesheet implements Parcelable {
         if(project == null)
         {
             throw new RuntimeException();
-            //project = new Project();
-            //project.setName("DATABASE ERROR");
         }
         return project;
     }
     //endregion
+
     //region Date Range in user friendly text
     public String getTxtDateRange() {
         return txtDateRange;
     }
+
     public void setTxtDateRange(String txtDateRange) {
         this.txtDateRange = txtDateRange;
     }
     //endregion
+
     //region Date Range unformatted
     public String getDateRange() {
         return dateRange;
     }
+
     public void setDateRange(String dateRange) {
         this.dateRange = dateRange;
     }
     //endregion
+
     //region Hours
     public String getHours() {
         return hours;
     }
+
     public void setHours(String hours) {
         this.hours = hours;
     }
     //endregion
+
     //region Submitted On
     public Timestamp getSubmittedOn() {
         return submittedOn;
     }
+
     public void setSubmittedOn(Timestamp submittedOn) {
         this.submittedOn = submittedOn;
     }
 
     //endregion
+
     //region User ID
     public String getUid() {
         return uid;
     }
+
     public void setUid(String uid) {
         this.uid = uid;
     }
     //endregion
+
     //region OnTime
     public boolean isOnTime() {
         return onTime;
@@ -205,28 +224,14 @@ public class Timesheet implements Parcelable {
         this.endDate = endDate;
     }
 
-    /**
-     * Describe the kinds of special objects contained in this Parcelable
-     * instance's marshaled representation. For example, if the object will
-     * include a file descriptor in the output of {@link #writeToParcel(Parcel, int)},
-     * the return value of this method must include the
-     * {@link #CONTENTS_FILE_DESCRIPTOR} bit.
-     *
-     * @return a bitmask indicating the set of special object types marshaled
-     * by this Parcelable object instance.
-     */
+    //endregion
+
+    //region Interface specific methods
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**
-     * Flatten this object in to a Parcel.
-     *
-     * @param dest  The Parcel in which the object should be written.
-     * @param flags Additional flags about how the object should be written.
-     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);

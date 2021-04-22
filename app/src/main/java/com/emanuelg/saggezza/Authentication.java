@@ -47,7 +47,7 @@ public class Authentication extends AppCompatActivity {
         authLoadingBar = findViewById(R.id.authLoadingBar);
 
         authLoadingBar.setVisibility(View.INVISIBLE);
-        // Set the dimensions of the sign-in button.
+
         SignInButton signInButton = findViewById(R.id.btnSignIn);
 
         signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -113,9 +113,10 @@ public class Authentication extends AppCompatActivity {
             // Signed in successfully, proceed to Main Activity.
             assert account != null;
             firebaseAuthWithGoogle(account.getIdToken());
+
         } catch (ApiException e) {
+
             // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             throw new RuntimeException(e.getMessage());
         }
@@ -162,6 +163,7 @@ public class Authentication extends AppCompatActivity {
     }
 
     private void addEmployee(FirebaseUser user) {
+
         Employee employee = Employee.getInstance();
         employee.setEmail(user.getEmail());
         employee.setScore(0);
@@ -169,11 +171,13 @@ public class Authentication extends AppCompatActivity {
         employee.setAchievementsTotal(1);
         employee.setBadgesCount(0);
         employee.setPenaltyBadgesCount(0);
+
         db.collection("Employees").document(Objects.requireNonNull(user.getUid())).set(employee)
                 .addOnSuccessListener(aVoid -> Log.d("DB", "DocumentSnapshot added or updated with ID: " + user.getUid()))
                 .addOnFailureListener(e -> Log.w("DB", "Error adding document", e));
         DocumentReference myRef = db.collection("Employees").document(Objects.requireNonNull(user.getUid()));
         employee.setMyReference(Objects.requireNonNull(myRef));
+
         //set user's default tasks and projects
         db.collection("Projects").document("3WB5FEVV2zVCB7qYSFiZ").update("resources",FieldValue.arrayUnion(myRef));
         db.collection("Projects").document("U4eMDAZewD0hd7gJZ8Ga").update("resources",FieldValue.arrayUnion(myRef));
@@ -188,6 +192,7 @@ public class Authentication extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         boolean isNew = Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getAdditionalUserInfo()).isNewUser();
+
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
