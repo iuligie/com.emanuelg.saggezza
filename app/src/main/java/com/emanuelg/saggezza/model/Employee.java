@@ -20,6 +20,7 @@ public class Employee {
     private int badgesCount;
     private int penaltyBadgesCount;
     private int achievementsTotal;
+
     @Exclude
     private DocumentReference myReference;
     //endregion
@@ -55,6 +56,7 @@ public class Employee {
     public DocumentReference getMyReference() {
         return myReference;
     }
+    @Exclude
     public void setMyReference(DocumentReference myReference) {
         this.myReference = myReference;
     }
